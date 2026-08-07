@@ -631,19 +631,22 @@
                 const mid = sliceMids[k];
                 const c = colors[k];
                 
-                const startX = mid.x + 25; // Adjusted closer for global balance
+                // Calculate the actual right-most edge of the pyramid at this level
+                // (mid.x - cx) is the x-distance to the face center, so 2x is the corner.
+                const rightEdgeX = cx + 2 * (mid.x - cx);
+                const startX = rightEdgeX + 25; // Placed strictly outside the pyramid
                 const pillH = 38;
                 const py = mid.y - pillH / 2;
                 
-                const pillW = 320; // Slightly narrower for better balance
+                const pillW = 320; 
                 const badgeW = 180;
                 const badgeX = startX + pillW - badgeW;
                 
                 svg += `<g id="svg-label-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;" filter="url(#ribbonShadow)">`;
                 
-                // Dot connectors
-                svg += `<circle cx="${(mid.x + 12).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" />\n`;
-                svg += `<circle cx="${(mid.x + 24).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" />\n`;
+                // Dot connectors starting from the pyramid edge
+                svg += `<circle cx="${(rightEdgeX + 8).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" opacity="0.8" />\n`;
+                svg += `<circle cx="${(rightEdgeX + 16).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" opacity="0.8" />\n`;
 
                 // White pill base
                 svg += `<rect x="${startX.toFixed(1)}" y="${py.toFixed(1)}" width="${pillW}" height="${pillH}" rx="${pillH/2}" fill="white" stroke="${c.accent}" stroke-width="1.5" opacity="0.95" />\n`;
@@ -682,7 +685,8 @@
                 result: [
                     "Hoàn thành tác vụ đúng tiêu chuẩn và thời gian.",
                     "Không để xảy ra lỗi do làm sai quy trình cốt lõi.",
-                    "Tạo ra sản phẩm/dịch vụ đạt chất lượng cơ bản."
+                    "Tạo ra sản phẩm/dịch vụ đạt chất lượng cơ bản.",
+                    "Tầm ảnh hưởng: Đảm bảo đúng 1 công đoạn đơn lẻ."
                 ]
             },
             2: {
@@ -701,7 +705,8 @@
                 result: [
                     "Vận hành công việc êm ái, đạt công suất tiêu chuẩn.",
                     "Giảm thiểu các lỗi lặt vặt do thiếu tập trung.",
-                    "Chủ động báo cáo khi phát hiện điểm bất thường."
+                    "Chủ động báo cáo khi phát hiện điểm bất thường.",
+                    "Tầm ảnh hưởng: Giữ nhịp nhàng luồng việc của cá nhân và người kế tiếp."
                 ]
             },
             3: {
@@ -720,7 +725,8 @@
                 result: [
                     "Tự kiểm tra và khắc phục lỗi mà không cần gọi hỗ trợ.",
                     "Duy trì hoạt động liên tục, không bị gián đoạn.",
-                    "Tối ưu hóa các thao tác cá nhân để làm việc nhanh hơn."
+                    "Tối ưu hóa các thao tác cá nhân để làm việc nhanh hơn.",
+                    "Tầm ảnh hưởng: Duy trì hiệu suất của toàn bộ dây chuyền nhỏ."
                 ]
             },
             4: {
@@ -739,7 +745,8 @@
                 result: [
                     "Cắt giảm thành công các hao phí (thời gian, vật tư).",
                     "Luồng công việc của nhóm trơn tru và gắn kết hơn.",
-                    "Nâng cao hiệu suất tổng thể của quy trình làm việc."
+                    "Nâng cao hiệu suất tổng thể của quy trình làm việc.",
+                    "Tầm ảnh hưởng: Tiết kiệm chi phí/thời gian cho một bộ phận."
                 ]
             },
             5: {
@@ -758,7 +765,8 @@
                 result: [
                     "Hoàn thiện các báo cáo quản trị chính xác, kịp thời.",
                     "Cung cấp bức tranh toàn cảnh về hiệu suất của team.",
-                    "Đảm bảo các mục tiêu ngắn hạn đi đúng tiến độ."
+                    "Đảm bảo các mục tiêu ngắn hạn đi đúng tiến độ.",
+                    "Tầm ảnh hưởng: Cung cấp góc nhìn toàn cảnh về hiệu năng của team."
                 ]
             },
             6: {
@@ -777,7 +785,8 @@
                 result: [
                     "Nhận diện sớm các rủi ro tiềm ẩn (Red Flags).",
                     "Đưa ra các quyết sách chiến thuật mang tính bước ngoặt.",
-                    "Ngăn ngừa thất thoát, tối ưu hóa lợi nhuận / hiệu năng."
+                    "Ngăn ngừa thất thoát, tối ưu hóa lợi nhuận / hiệu năng.",
+                    "Tầm ảnh hưởng: Tối ưu hóa lợi nhuận và ngăn chặn rủi ro hệ thống."
                 ]
             },
             7: {
@@ -796,7 +805,8 @@
                 result: [
                     "Tạo ra các thế hệ nhân sự có năng lực tương đương.",
                     "Đảm bảo hệ thống vận hành không phụ thuộc cá nhân.",
-                    "Nhân bản quy trình thành công sang các đội ngũ mới."
+                    "Nhân bản quy trình thành công sang các đội ngũ mới.",
+                    "Tầm ảnh hưởng: Nhân bản thành công năng lực tổ chức sang nhiều chi nhánh."
                 ]
             },
             8: {
@@ -815,7 +825,8 @@
                 result: [
                     "Đưa ra sáng kiến tạo bước nhảy vọt về năng suất.",
                     "Ra mắt mô hình hoạt động / sản phẩm mang tính cách mạng.",
-                    "Tái định hình lợi thế cạnh tranh của toàn bộ tổ chức."
+                    "Tái định hình lợi thế cạnh tranh của toàn bộ tổ chức.",
+                    "Tầm ảnh hưởng: Định hình lại luật chơi, tạo lợi thế cạnh tranh cốt lõi."
                 ]
             },
             9: {
@@ -834,7 +845,8 @@
                 result: [
                     "Xây dựng thành công văn hóa tự chủ, sáng tạo, gắn kết.",
                     "Nhân sự tự giác làm việc với mức năng lượng cao nhất.",
-                    "Tổ chức trở thành một hệ sinh thái phát triển bền vững."
+                    "Tổ chức trở thành một hệ sinh thái phát triển bền vững.",
+                    "Tầm ảnh hưởng: Lan tỏa di sản, kiến tạo hệ sinh thái bền vững dài hạn."
                 ]
             }
         };
