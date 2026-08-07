@@ -646,7 +646,26 @@
                 svg += `<circle cx="${(mid.x + 24).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" />\n`;
 
                 // White pill base
-                svg += `<rect x="${startX.toFixed(1)}" y="${py.toFix        const levelsData = {
+                svg += `<rect x="${startX.toFixed(1)}" y="${py.toFixed(1)}" width="${pillW}" height="${pillH}" rx="${pillH/2}" fill="white" stroke="${c.accent}" stroke-width="1.5" opacity="0.95" />\n`;
+                
+                // Colored badge inside for subtitle
+                svg += `<rect x="${badgeX.toFixed(1)}" y="${(py + 2).toFixed(1)}" width="${badgeW - 2}" height="${pillH - 4}" rx="${(pillH - 4)/2}" fill="${c.accent}" />\n`;
+
+                // Left text (Title)
+                svg += `<text x="${(startX + 18).toFixed(1)}" y="${(mid.y + 1).toFixed(1)}" fill="${c.accent}" font-weight="900" font-size="14" font-family="'Be Vietnam Pro', sans-serif" dominant-baseline="central" style="pointer-events:none;">${k}. ${levelNames[k]}</text>\n`;
+                
+                // Right text (Subtitle)
+                svg += `<text x="${(badgeX + badgeW/2 - 1).toFixed(1)}" y="${(mid.y + 1).toFixed(1)}" fill="white" font-weight="600" font-size="11.5" font-family="'Inter', sans-serif" dominant-baseline="central" text-anchor="middle" style="pointer-events:none;">${subtitles[k]}</text>\n`;
+
+                svg += `</g>\n`;
+            }
+
+            svg += '</svg>';
+            document.getElementById('svg-pyramid-container').innerHTML = svg;
+        }
+
+        // --- Data and Interaction ---
+        const levelsData = {
             1: {
                 title: "Level 1: Làm", subtitle: "Thực thi cơ bản", group: "I. Nhân viên",
                 classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
