@@ -467,7 +467,7 @@
             const R = 120;
             const H = 400;
             const gap = 4;
-            const cx = 400;     // centered in wider SVG
+            const cx = 380;
             const cy = 500;
 
             // Colors: L1-3 Blue, L4-6 Orange/Amber, L7-9 Green
@@ -483,25 +483,25 @@
                 9: {top: '#22C55E', left: '#15803D', right: '#14532D', accent: '#166534'}
             };
 
-            // Level names for inside pyramid
+            // Level names (for right ribbons)
             const levelNames = {
                 1: 'Làm', 2: 'Biết', 3: 'Hiểu',
                 4: 'Quan sát', 5: 'Tổng hợp', 6: 'Phân tích',
                 7: 'Đào tạo', 8: 'Sáng tạo', 9: 'Truyền cảm hứng'
             };
 
-            // Subtitles for right-side ribbons
+            // Subtitles
             const subtitles = {
                 1: 'Thực thi cơ bản', 2: 'Nhận thức thao tác', 3: 'Nắm bắt nguyên lý',
                 4: 'Tối ưu luồng việc', 5: 'Hệ thống hóa Dữ liệu', 6: 'Chẩn đoán & Ra quyết định',
                 7: 'Chuyển giao & Nhân bản', 8: 'Kiến trúc Hệ thống mới', 9: 'Kiến tạo Văn hóa'
             };
 
-            // Group config
+            // Group config with icons (FontAwesome unicode)
             const groupBrackets = [
-                { levels: [1,2,3], name: 'I. NHÂN VIÊN', color: '#2563EB' },
-                { levels: [4,5,6], name: 'II. QUẢN LÝ', color: '#EA580C' },
-                { levels: [7,8,9], name: 'III. LÃNH ĐẠO', color: '#16A34A' }
+                { levels: [1,2,3], name: 'I. NHÂN VIÊN', color: '#2563EB', bg: '#DBEAFE', icon: '\uf007' },
+                { levels: [4,5,6], name: 'II. QUẢN LÝ', color: '#EA580C', bg: '#FFF7ED', icon: '\uf0b1' },
+                { levels: [7,8,9], name: 'III. LÃNH ĐẠO', color: '#16A34A', bg: '#F0FDF4', icon: '\uf521' }
             ];
 
             function project(x, y, z) {
@@ -519,11 +519,15 @@
               <filter id="pyramidShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="3" dy="6" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.15"/>
               </filter>
+              <filter id="ribbonShadow" x="-5%" y="-20%" width="110%" height="150%">
+                <feDropShadow dx="1" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.1"/>
+              </filter>
             </defs>\n`;
 
-            // Store midpoints
             const sliceMids = {};
             const sliceLeftMids = {};
+            // Store top-right corner of each slice for ribbon start
+            const sliceRightEdges = {};
 
             // --- Draw pyramid ---
             svg += `<g filter="url(#pyramidShadow)">\n`;
@@ -557,15 +561,21 @@
 
                 const c = colors[k];
 
-                // Right edge midpoint (for right labels)
+                // Midpoints
                 const z_mid = (z_bottom + z_top) / 2;
                 const r_mid = R * (1 - z_mid / H);
                 const rightEdge = project(r_mid, -r_mid, z_mid);
                 sliceMids[k] = { x: rightEdge[0], y: rightEdge[1], color: c.accent };
 
-                // Left edge midpoint (for left group labels)
                 const leftEdge = project(-r_mid, r_mid, z_mid);
                 sliceLeftMids[k] = { x: leftEdge[0], y: leftEdge[1] };
+
+                // Right edge corners for ribbon start (top-right and bottom-right of right face)
+                sliceRightEdges[k] = {
+                    topY: Math.min(p2_r[1], p3_r[1]),
+                    botY: Math.max(p2_r[1], p3_r[1]),
+                    x: Math.max(p2_r[0], p3_r[0])
+                };
 
                 let group = `<g id="svg-slice-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;">\n`;
 
@@ -575,12 +585,11 @@
                     group += `  <polygon points="${top_pts}" fill="${c.top}" stroke="rgba(255,255,255,0.2)" stroke-width="1" />\n`;
                 }
 
-                // Text INSIDE pyramid: "1. Làm" instead of "L1"
+                // Text INSIDE pyramid: "Level X"
                 const tx = (p1[0] + p2[0] + p3[0] + p4[0]) / 4;
                 const ty = (p1[1] + p2[1] + p3[1] + p4[1]) / 4 + 5;
-                const label = `${k}. ${levelNames[k]}`;
                 const fontSize = k <= 4 ? 12 : (k <= 7 ? 11 : 9);
-                group += `  <text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" fill="rgba(255,255,255,0.95)" font-weight="800" font-size="${fontSize}" font-family="'Be Vietnam Pro', sans-serif" text-anchor="middle" style="pointer-events:none;">${label}</text>\n`;
+                group += `  <text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" fill="rgba(255,255,255,0.95)" font-weight="800" font-size="${fontSize}" font-family="'Be Vietnam Pro', sans-serif" text-anchor="middle" style="pointer-events:none;">Level ${k}</text>\n`;
 
                 group += '</g>\n';
                 svg += group;
@@ -588,47 +597,60 @@
 
             svg += '</g>\n'; // end shadow group
 
-            // --- LEFT SIDE: Group brackets (I. Nhân viên, II. Quản lý, III. Lãnh đạo) ---
-            const bracketX = 105;
-
+            // --- LEFT SIDE: Group labels with icon cards ---
             groupBrackets.forEach(grp => {
                 const topLeft = sliceLeftMids[grp.levels[grp.levels.length - 1]];
                 const botLeft = sliceLeftMids[grp.levels[0]];
-                const topY = topLeft.y - 18;
-                const botY = botLeft.y + 18;
+                const topY = topLeft.y - 16;
+                const botY = botLeft.y + 16;
                 const midY = (topY + botY) / 2;
+                const cardH = botY - topY;
+                const cardW = 150;
+                const cardX = 30;
 
-                // Vertical bracket line
-                svg += `<line x1="${bracketX}" y1="${topY.toFixed(1)}" x2="${bracketX}" y2="${botY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
-                // Top tick
-                svg += `<line x1="${bracketX}" y1="${topY.toFixed(1)}" x2="${bracketX + 8}" y2="${topY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
-                // Bottom tick
-                svg += `<line x1="${bracketX}" y1="${botY.toFixed(1)}" x2="${bracketX + 8}" y2="${botY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
+                // Card background with rounded corners
+                svg += `<rect x="${cardX}" y="${topY.toFixed(1)}" width="${cardW}" height="${cardH.toFixed(1)}" rx="12" fill="${grp.bg}" stroke="${grp.color}" stroke-width="1.5" stroke-opacity="0.3" />\n`;
+                
+                // Connector line from card to pyramid
+                svg += `<line x1="${cardX + cardW}" y1="${midY.toFixed(1)}" x2="${topLeft.x - 5}" y2="${midY.toFixed(1)}" stroke="${grp.color}" stroke-width="1.5" stroke-dasharray="4,3" stroke-opacity="0.5" />\n`;
 
-                // Group name (horizontal, to the left of the bracket)
-                svg += `<text x="${bracketX - 12}" y="${midY.toFixed(1)}" fill="${grp.color}" font-weight="900" font-size="13" font-family="'Be Vietnam Pro', sans-serif" text-anchor="end" dominant-baseline="central" style="letter-spacing:1px;">${grp.name}</text>\n`;
+                // Icon circle
+                const iconCx = cardX + 30;
+                const iconCy = midY - 8;
+                svg += `<circle cx="${iconCx}" cy="${iconCy.toFixed(1)}" r="16" fill="${grp.color}" opacity="0.15" />\n`;
+                svg += `<text x="${iconCx}" y="${(iconCy + 5).toFixed(1)}" fill="${grp.color}" font-size="14" font-family="'Font Awesome 6 Free'" font-weight="900" text-anchor="middle" style="pointer-events:none;">${grp.icon}</text>\n`;
+                
+                // Group name
+                svg += `<text x="${iconCx + 24}" y="${(iconCy + 2).toFixed(1)}" fill="${grp.color}" font-weight="900" font-size="12" font-family="'Be Vietnam Pro', sans-serif" dominant-baseline="central" style="letter-spacing:0.5px;">${grp.name}</text>\n`;
+
+                // Level range subtitle
+                const rangeText = `Level ${grp.levels[0]} - ${grp.levels[grp.levels.length-1]}`;
+                svg += `<text x="${iconCx + 24}" y="${(midY + 14).toFixed(1)}" fill="${grp.color}" font-weight="500" font-size="10" font-family="'Inter', sans-serif" opacity="0.7">${rangeText}</text>\n`;
             });
 
-            // --- RIGHT SIDE: Subtitle ribbons ---
-            const ribbonStartX = 610;
-            const ribbonW = 280;
-            const ribbonH = 36;
+            // --- RIGHT SIDE: Ribbons extending FROM pyramid edge ---
+            const ribbonEndX = 920;  // where ribbons end
+            const ribbonH = 38;
 
             for (let k = 1; k <= 9; k++) {
                 const mid = sliceMids[k];
                 const c = colors[k];
                 const ry = mid.y - ribbonH / 2;
+                // Ribbon starts right at the pyramid edge
+                const ribbonStartX = mid.x;
+                const rw = ribbonEndX - ribbonStartX;
 
-                // Connector line from pyramid to ribbon
-                svg += `<line x1="${mid.x.toFixed(1)}" y1="${mid.y.toFixed(1)}" x2="${ribbonStartX}" y2="${mid.y.toFixed(1)}" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,3" />\n`;
-                svg += `<circle cx="${mid.x.toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="white" stroke="${c.accent}" stroke-width="2" />\n`;
+                svg += `<g id="svg-label-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;" filter="url(#ribbonShadow)">`;
 
-                // Ribbon
-                svg += `<g id="svg-label-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;">`;
-                svg += `<rect x="${ribbonStartX}" y="${ry.toFixed(1)}" width="${ribbonW}" height="${ribbonH}" rx="6" fill="${c.accent}" opacity="0.9" />\n`;
+                // Main ribbon rect (starts from pyramid edge, extends to the right)
+                svg += `<rect x="${ribbonStartX.toFixed(1)}" y="${ry.toFixed(1)}" width="${rw.toFixed(1)}" height="${ribbonH}" rx="0 6 6 0" fill="${c.accent}" opacity="0.92" />\n`;
+                // Right rounded end cap
+                svg += `<rect x="${(ribbonEndX - 8).toFixed(1)}" y="${ry.toFixed(1)}" width="8" height="${ribbonH}" rx="4" fill="${c.accent}" opacity="0.92" />\n`;
 
-                // Subtitle text
-                svg += `<text x="${ribbonStartX + 18}" y="${(mid.y + 5).toFixed(1)}" fill="white" font-weight="700" font-size="13" font-family="'Be Vietnam Pro', sans-serif" style="pointer-events:none;">${subtitles[k]}</text>\n`;
+                // Title: "1. Làm"
+                svg += `<text x="${(ribbonStartX + 18).toFixed(1)}" y="${(mid.y - 4).toFixed(1)}" fill="white" font-weight="900" font-size="14" font-family="'Be Vietnam Pro', sans-serif" style="pointer-events:none;">${k}. ${levelNames[k]}</text>\n`;
+                // Subtitle
+                svg += `<text x="${(ribbonStartX + 18).toFixed(1)}" y="${(mid.y + 12).toFixed(1)}" fill="rgba(255,255,255,0.75)" font-weight="500" font-size="10" font-family="'Inter', sans-serif" style="pointer-events:none;">${subtitles[k]}</text>\n`;
 
                 svg += `</g>\n`;
             }
