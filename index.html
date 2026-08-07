@@ -144,21 +144,6 @@
         }
         .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
         @media (max-width: 768px) { .do-dont-grid { grid-template-columns: 1fr; } }
-
-        /* Pyramid specific styles */
-        .pyramid-slice {
-            transition: var(--transition-fast);
-            position: relative;
-            opacity: 0.6;
-        }
-        .pyramid-slice:hover {
-            opacity: 0.9 !important;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.3);
-        }
-        .active-slice {
-            opacity: 1 !important;
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.6) !important;
-        }
         
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -194,61 +179,19 @@
             <div class="section-header">
                 <p class="section-meta">Phần I</p>
                 <h2 class="section-title">Hệ Thống Phát Triển Năng Lực</h2>
-                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Mô hình Kim tự tháp (Pyramid) 9 cấp độ phát triển toàn diện. Nhấp vào từng cấp độ bên tháp để xem chi tiết.</p>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Mô hình Kim tự tháp 3D - 9 cấp độ phát triển. Nhấp vào từng khối (slice) để xem chi tiết.</p>
             </div>
 
             <div class="glass-panel mt-8" style="padding: 3rem;">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     
                     <!-- LEFT: PYRAMID VISUAL -->
-                    <div class="lg:col-span-5 flex justify-center items-stretch gap-6 relative">
-                        <!-- Pyramid shape -->
-                        <div class="w-full max-w-[340px] aspect-[4/5] flex flex-col drop-shadow-xl" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); background: white;">
-                            <!-- Lãnh đạo -->
-                            <div class="flex-1 flex flex-col">
-                                <div class="pyramid-slice flex-1 flex items-end justify-center pb-2 text-white font-bold bg-amber-600 border-b border-white/20 cursor-pointer text-xs" onclick="showLevel(9)" id="slice-9">L9</div>
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-amber-500 border-b border-white/20 cursor-pointer text-sm" onclick="showLevel(8)" id="slice-8">L8</div>
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-amber-400 border-b-2 border-white/40 cursor-pointer text-base" onclick="showLevel(7)" id="slice-7">L7</div>
-                            </div>
-                            <!-- Quản lý -->
-                            <div class="flex-1 flex flex-col">
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-indigo-600 border-b border-white/20 cursor-pointer text-lg" onclick="showLevel(6)" id="slice-6">Level 6</div>
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-indigo-500 border-b border-white/20 cursor-pointer text-lg" onclick="showLevel(5)" id="slice-5">Level 5</div>
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-indigo-400 border-b-2 border-white/40 cursor-pointer text-xl" onclick="showLevel(4)" id="slice-4">Level 4</div>
-                            </div>
-                            <!-- Nhân viên -->
-                            <div class="flex-1 flex flex-col">
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-blue-700 border-b border-white/20 cursor-pointer text-xl" onclick="showLevel(3)" id="slice-3">Level 3</div>
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-blue-600 border-b border-white/20 cursor-pointer text-2xl" onclick="showLevel(2)" id="slice-2">Level 2</div>
-                                <div class="pyramid-slice flex-1 flex items-center justify-center text-white font-bold bg-blue-500 cursor-pointer text-2xl" onclick="showLevel(1)" id="slice-1">Level 1</div>
-                            </div>
-                        </div>
-
-                        <!-- Labels on the right -->
-                        <div class="flex flex-col justify-between py-6 font-bold text-sm tracking-wide">
-                            <div class="flex-1 flex items-center text-amber-600">
-                                <div class="border-l-2 border-amber-400 pl-4 py-2">
-                                    <div class="uppercase text-[10px] text-amber-500/80 tracking-widest mb-1">Cấp độ Kiến tạo</div>
-                                    III. LÃNH ĐẠO
-                                </div>
-                            </div>
-                            <div class="flex-1 flex items-center text-indigo-600">
-                                <div class="border-l-2 border-indigo-400 pl-4 py-2">
-                                    <div class="uppercase text-[10px] text-indigo-500/80 tracking-widest mb-1">Cấp độ Hệ thống</div>
-                                    II. QUẢN LÝ
-                                </div>
-                            </div>
-                            <div class="flex-1 flex items-center text-blue-600">
-                                <div class="border-l-2 border-blue-400 pl-4 py-2">
-                                    <div class="uppercase text-[10px] text-blue-500/80 tracking-widest mb-1">Cấp độ Thực thi</div>
-                                    I. NHÂN VIÊN
-                                </div>
-                            </div>
-                        </div>
+                    <div class="lg:col-span-6 flex justify-center items-center relative min-h-[420px]" id="svg-pyramid-container">
+                        <!-- SVG sẽ được render bằng Javascript -->
                     </div>
 
                     <!-- RIGHT: DETAILS PANEL -->
-                    <div class="lg:col-span-7 h-full flex items-center">
+                    <div class="lg:col-span-6 h-full flex items-center">
                         <div id="level-details-container" class="w-full bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_15px_40px_rgb(0,0,0,0.06)] min-h-[420px] flex flex-col justify-center">
                             <!-- Detail content will be injected here -->
                         </div>
@@ -524,6 +467,114 @@
 
     <!-- Interactive Pyramid Logic -->
     <script>
+        // Draw 3D Pyramid SVG
+        function draw3DPyramid() {
+            const R = 150;
+            const H = 220;
+            const gap = 3;
+            const cx = 200;
+            const cy = 290; // offset to center
+
+            const colors = {
+                1: {top: '#60A5FA', left: '#3B82F6', right: '#2563EB', text: '#DBEAFE'},
+                2: {top: '#3B82F6', left: '#2563EB', right: '#1D4ED8', text: '#BFDBFE'},
+                3: {top: '#2563EB', left: '#1D4ED8', right: '#1E40AF', text: '#93C5FD'},
+                4: {top: '#818CF8', left: '#6366F1', right: '#4F46E5', text: '#E0E7FF'},
+                5: {top: '#6366F1', left: '#4F46E5', right: '#4338CA', text: '#C7D2FE'},
+                6: {top: '#4F46E5', left: '#4338CA', right: '#3730A3', text: '#A5B4FC'},
+                7: {top: '#FBBF24', left: '#F59E0B', right: '#D97706', text: '#FEF3C7'},
+                8: {top: '#F59E0B', left: '#D97706', right: '#B45309', text: '#FDE68A'},
+                9: {top: '#D97706', left: '#B45309', right: '#92400E', text: '#FBBF24'}
+            };
+
+            function project(x, y, z) {
+                const ang = Math.PI / 6;
+                const px = (x - y) * Math.cos(ang);
+                const py = (x + y) * Math.sin(ang) - z;
+                return [px + cx, py + cy];
+            }
+
+            let svg = '<svg viewBox="0 0 540 450" class="w-full h-full drop-shadow-2xl overflow-visible" style="max-height: 440px;">\n';
+
+            // Groups labels config
+            const groups = {
+                2: { name: 'I. NHÂN VIÊN', sub: 'Cấp độ Thực thi', color: '#2563EB' },
+                5: { name: 'II. QUẢN LÝ', sub: 'Cấp độ Hệ thống', color: '#4F46E5' },
+                8: { name: 'III. LÃNH ĐẠO', sub: 'Cấp độ Kiến tạo', color: '#D97706' }
+            };
+
+            // Calculate SVG elements
+            for (let k = 1; k <= 9; k++) {
+                let z_bottom = (k - 1) * (H / 9) + gap;
+                let z_top = k * (H / 9) - gap;
+                if (k === 9) z_top = H; // point at the top
+
+                let rb = R * (1 - z_bottom / H);
+                let rt = R * (1 - z_top / H);
+                if (rt < 0) rt = 0;
+
+                const p1 = project(-rb, rb, z_bottom);
+                const p2 = project(rb, rb, z_bottom);
+                const p3 = project(rt, rt, z_top);
+                const p4 = project(-rt, rt, z_top);
+                const left_pts = `${p1[0]},${p1[1]} ${p2[0]},${p2[1]} ${p3[0]},${p3[1]} ${p4[0]},${p4[1]}`;
+
+                const p1_r = project(rb, rb, z_bottom);
+                const p2_r = project(rb, -rb, z_bottom);
+                const p3_r = project(rt, -rt, z_top);
+                const p4_r = project(rt, rt, z_top);
+                const right_pts = `${p1_r[0]},${p1_r[1]} ${p2_r[0]},${p2_r[1]} ${p3_r[0]},${p3_r[1]} ${p4_r[0]},${p4_r[1]}`;
+
+                const p1_t = project(rt, rt, z_top);
+                const p2_t = project(rt, -rt, z_top);
+                const p3_t = project(-rt, -rt, z_top);
+                const p4_t = project(-rt, rt, z_top);
+                const top_pts = `${p1_t[0]},${p1_t[1]} ${p2_t[0]},${p2_t[1]} ${p3_t[0]},${p3_t[1]} ${p4_t[0]},${p4_t[1]}`;
+
+                const c = colors[k];
+                
+                let group = `<g id="svg-slice-${k}" class="cursor-pointer transition-all duration-300" onclick="showLevel(${k})" style="transform-origin: center;">\n`;
+                
+                // Draw faces
+                group += `  <polygon points="${left_pts}" fill="${c.left}" stroke="${c.left}" stroke-width="0.5" />\n`;
+                group += `  <polygon points="${right_pts}" fill="${c.right}" stroke="${c.right}" stroke-width="0.5" />\n`;
+                if (rt > 0) {
+                    group += `  <polygon points="${top_pts}" fill="${c.top}" stroke="${c.top}" stroke-width="0.5" />\n`;
+                }
+
+                // Text on the left face
+                // A bit of magic to position the text nicely on the angled face
+                const tx = (p1[0] + p2[0] + p3[0] + p4[0]) / 4 - 15;
+                const ty = (p1[1] + p2[1] + p3[1] + p4[1]) / 4 + 4;
+                group += `  <text x="${tx}" y="${ty}" fill="${c.text}" font-weight="900" font-size="13" font-family="sans-serif" style="pointer-events:none;">L${k}</text>\n`;
+
+                // Connecting lines and Labels
+                if (groups[k]) {
+                    const z_mid = (z_bottom + z_top) / 2;
+                    const r_mid = R * (1 - z_mid / H);
+                    const rp = project(r_mid, -r_mid, z_mid);
+                    const lineY = rp[1];
+                    const labelX = 360;
+                    
+                    // Dotted line
+                    group += `  <line x1="${rp[0]}" y1="${lineY}" x2="${labelX}" y2="${lineY}" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="4,4" />\n`;
+                    // Connector dots
+                    group += `  <circle cx="${rp[0]}" cy="${lineY}" r="3.5" fill="white" stroke="#94A3B8" stroke-width="2" />\n`;
+                    group += `  <circle cx="${labelX}" cy="${lineY}" r="3.5" fill="white" stroke="#94A3B8" stroke-width="2" />\n`;
+                    
+                    // Texts
+                    group += `  <text x="${labelX + 15}" y="${lineY - 6}" fill="#94A3B8" font-weight="800" font-size="10" letter-spacing="1" font-family="sans-serif">${groups[k].sub.toUpperCase()}</text>\n`;
+                    group += `  <text x="${labelX + 15}" y="${lineY + 12}" fill="${groups[k].color}" font-weight="900" font-size="15" font-family="sans-serif">${groups[k].name}</text>\n`;
+                }
+
+                group += '</g>\n';
+                svg += group;
+            }
+            svg += '</svg>';
+            document.getElementById('svg-pyramid-container').innerHTML = svg;
+        }
+
+        // --- Data and Interaction ---
         const levelsData = {
             1: {
                 title: "Level 1: Làm",
@@ -609,13 +660,21 @@
         };
 
         function showLevel(level) {
-            // Remove active classes
-            document.querySelectorAll('.pyramid-slice').forEach(el => {
-                el.classList.remove('active-slice');
-            });
+            // Remove active styles from SVG slices
+            for(let i=1; i<=9; i++) {
+                let el = document.getElementById('svg-slice-' + i);
+                if(el) {
+                    el.style.transform = 'translateY(0) scale(1)';
+                    el.style.filter = 'none';
+                }
+            }
             
-            // Add active class to selected slice
-            document.getElementById('slice-' + level).classList.add('active-slice');
+            // Highlight active SVG slice (lift it slightly)
+            let activeEl = document.getElementById('svg-slice-' + level);
+            if(activeEl) {
+                activeEl.style.transform = 'translateY(-4px) scale(1.02)';
+                activeEl.style.filter = 'drop-shadow(0px 10px 10px rgba(0,0,0,0.2)) brightness(1.15)';
+            }
             
             const data = levelsData[level];
             const c = data.classes;
@@ -660,8 +719,11 @@
             document.getElementById('level-details-container').innerHTML = html;
         }
         
-        // Auto click level 1 on load
-        window.onload = () => showLevel(1);
+        // Initialize
+        window.onload = () => {
+            draw3DPyramid();
+            showLevel(1);
+        };
     </script>
 </body>
 </html>
