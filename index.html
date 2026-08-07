@@ -632,21 +632,21 @@
                 const c = colors[k];
                 
                 // Calculate the actual right-most edge of the pyramid at this level
-                // (mid.x - cx) is the x-distance to the face center, so 2x is the corner.
                 const rightEdgeX = cx + 2 * (mid.x - cx);
-                const startX = rightEdgeX + 25; // Placed strictly outside the pyramid
+                
+                // Align all right labels vertically
+                const startX = 820; 
                 const pillH = 38;
                 const py = mid.y - pillH / 2;
                 
-                const pillW = 320; 
-                const badgeW = 180;
+                const pillW = 340; 
+                const badgeW = 190;
                 const badgeX = startX + pillW - badgeW;
                 
                 svg += `<g id="svg-label-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;" filter="url(#ribbonShadow)">`;
                 
-                // Dot connectors starting from the pyramid edge
-                svg += `<circle cx="${(rightEdgeX + 8).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" opacity="0.8" />\n`;
-                svg += `<circle cx="${(rightEdgeX + 16).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" opacity="0.8" />\n`;
+                // Dotted line connecting pyramid edge to the label
+                svg += `<line x1="${(rightEdgeX + 4).toFixed(1)}" y1="${mid.y.toFixed(1)}" x2="${(startX - 6).toFixed(1)}" y2="${mid.y.toFixed(1)}" stroke="${c.accent}" stroke-width="2" stroke-dasharray="3,4" opacity="0.6" />\n`;
 
                 // White pill base
                 svg += `<rect x="${startX.toFixed(1)}" y="${py.toFixed(1)}" width="${pillW}" height="${pillH}" rx="${pillH/2}" fill="white" stroke="${c.accent}" stroke-width="1.5" opacity="0.95" />\n`;
@@ -672,6 +672,7 @@
             1: {
                 title: "Level 1: Làm", subtitle: "Thực thi cơ bản", group: "I. Nhân viên",
                 classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                impact: "Đảm bảo đúng 1 công đoạn đơn lẻ.",
                 desc: [
                     "Làm chính xác theo hướng dẫn, quy định đã được ban hành.",
                     "Không tự ý thay đổi quy trình khi chưa được phép.",
@@ -685,13 +686,13 @@
                 result: [
                     "Hoàn thành tác vụ đúng tiêu chuẩn và thời gian.",
                     "Không để xảy ra lỗi do làm sai quy trình cốt lõi.",
-                    "Tạo ra sản phẩm/dịch vụ đạt chất lượng cơ bản.",
-                    "Tầm ảnh hưởng: Đảm bảo đúng 1 công đoạn đơn lẻ."
+                    "Tạo ra sản phẩm/dịch vụ đạt chất lượng cơ bản."
                 ]
             },
             2: {
                 title: "Level 2: Biết", subtitle: "Nhận thức thao tác", group: "I. Nhân viên",
                 classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                impact: "Giữ nhịp nhàng luồng việc cá nhân & người kế tiếp.",
                 desc: [
                     "Nắm được kết quả và ý nghĩa của hành động mình đang làm.",
                     "Nhận thức được luồng công việc liền trước và liền sau.",
@@ -705,13 +706,13 @@
                 result: [
                     "Vận hành công việc êm ái, đạt công suất tiêu chuẩn.",
                     "Giảm thiểu các lỗi lặt vặt do thiếu tập trung.",
-                    "Chủ động báo cáo khi phát hiện điểm bất thường.",
-                    "Tầm ảnh hưởng: Giữ nhịp nhàng luồng việc của cá nhân và người kế tiếp."
+                    "Chủ động báo cáo khi phát hiện điểm bất thường."
                 ]
             },
             3: {
                 title: "Level 3: Hiểu", subtitle: "Nắm bắt nguyên lý", group: "I. Nhân viên",
                 classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                impact: "Duy trì hiệu suất của toàn bộ dây chuyền nhỏ.",
                 desc: [
                     "Hiểu rõ cơ chế vận hành đằng sau từng thao tác.",
                     "Phân tích được nguyên nhân - kết quả của các sự vụ.",
@@ -725,13 +726,13 @@
                 result: [
                     "Tự kiểm tra và khắc phục lỗi mà không cần gọi hỗ trợ.",
                     "Duy trì hoạt động liên tục, không bị gián đoạn.",
-                    "Tối ưu hóa các thao tác cá nhân để làm việc nhanh hơn.",
-                    "Tầm ảnh hưởng: Duy trì hiệu suất của toàn bộ dây chuyền nhỏ."
+                    "Tối ưu hóa các thao tác cá nhân để làm việc nhanh hơn."
                 ]
             },
             4: {
                 title: "Level 4: Quan sát", subtitle: "Tối ưu luồng việc", group: "II. Quản lý",
                 classes: { bg: 'bg-rose-100', textDark: 'text-rose-800', textLight: 'text-rose-600', border: 'border-rose-200', bar: 'bg-rose-500' },
+                impact: "Tiết kiệm chi phí/thời gian cho một bộ phận.",
                 desc: [
                     "Đánh giá liên tục cách làm của bản thân và đồng đội.",
                     "Tìm ra các điểm nghẽn (bottlenecks) trong quy trình hiện tại.",
@@ -745,13 +746,13 @@
                 result: [
                     "Cắt giảm thành công các hao phí (thời gian, vật tư).",
                     "Luồng công việc của nhóm trơn tru và gắn kết hơn.",
-                    "Nâng cao hiệu suất tổng thể của quy trình làm việc.",
-                    "Tầm ảnh hưởng: Tiết kiệm chi phí/thời gian cho một bộ phận."
+                    "Nâng cao hiệu suất tổng thể của quy trình làm việc."
                 ]
             },
             5: {
                 title: "Level 5: Tổng hợp", subtitle: "Hệ thống hóa Dữ liệu", group: "II. Quản lý",
                 classes: { bg: 'bg-orange-100', textDark: 'text-orange-800', textLight: 'text-orange-600', border: 'border-orange-200', bar: 'bg-orange-500' },
+                impact: "Cung cấp góc nhìn toàn cảnh hiệu năng của team.",
                 desc: [
                     "Thu thập dữ liệu, thông tin rời rạc từ thực tế hoạt động.",
                     "Xâu chuỗi, hệ thống hóa thành các báo cáo tổng quan.",
@@ -765,13 +766,13 @@
                 result: [
                     "Hoàn thiện các báo cáo quản trị chính xác, kịp thời.",
                     "Cung cấp bức tranh toàn cảnh về hiệu suất của team.",
-                    "Đảm bảo các mục tiêu ngắn hạn đi đúng tiến độ.",
-                    "Tầm ảnh hưởng: Cung cấp góc nhìn toàn cảnh về hiệu năng của team."
+                    "Đảm bảo các mục tiêu ngắn hạn đi đúng tiến độ."
                 ]
             },
             6: {
                 title: "Level 6: Phân tích", subtitle: "Chẩn đoán & Ra quyết định", group: "II. Quản lý",
                 classes: { bg: 'bg-amber-100', textDark: 'text-amber-800', textLight: 'text-amber-600', border: 'border-amber-200', bar: 'bg-amber-500' },
+                impact: "Tối ưu hóa lợi nhuận và ngăn ngừa rủi ro hệ thống.",
                 desc: [
                     "Nhìn sâu vào báo cáo để bắt đúng 'bệnh' của hệ thống.",
                     "Đưa ra các quyết định xử lý tận gốc vấn đề, tránh tái diễn.",
@@ -785,13 +786,13 @@
                 result: [
                     "Nhận diện sớm các rủi ro tiềm ẩn (Red Flags).",
                     "Đưa ra các quyết sách chiến thuật mang tính bước ngoặt.",
-                    "Ngăn ngừa thất thoát, tối ưu hóa lợi nhuận / hiệu năng.",
-                    "Tầm ảnh hưởng: Tối ưu hóa lợi nhuận và ngăn chặn rủi ro hệ thống."
+                    "Ngăn ngừa thất thoát, tối ưu hóa lợi nhuận / hiệu năng."
                 ]
             },
             7: {
                 title: "Level 7: Đào tạo", subtitle: "Chuyển giao & Nhân bản", group: "III. Lãnh đạo",
                 classes: { bg: 'bg-teal-100', textDark: 'text-teal-800', textLight: 'text-teal-600', border: 'border-teal-200', bar: 'bg-teal-500' },
+                impact: "Nhân bản thành công năng lực sang nhiều chi nhánh.",
                 desc: [
                     "Đóng gói toàn bộ kiến thức, kinh nghiệm thành tài liệu.",
                     "Huấn luyện, dẫn dắt để xây dựng đội ngũ kế thừa tinh nhuệ.",
@@ -805,13 +806,13 @@
                 result: [
                     "Tạo ra các thế hệ nhân sự có năng lực tương đương.",
                     "Đảm bảo hệ thống vận hành không phụ thuộc cá nhân.",
-                    "Nhân bản quy trình thành công sang các đội ngũ mới.",
-                    "Tầm ảnh hưởng: Nhân bản thành công năng lực tổ chức sang nhiều chi nhánh."
+                    "Nhân bản quy trình thành công sang các đội ngũ mới."
                 ]
             },
             8: {
                 title: "Level 8: Sáng tạo", subtitle: "Kiến trúc Hệ thống mới", group: "III. Lãnh đạo",
                 classes: { bg: 'bg-emerald-100', textDark: 'text-emerald-800', textLight: 'text-emerald-600', border: 'border-emerald-200', bar: 'bg-emerald-500' },
+                impact: "Định hình lại luật chơi, tạo lợi thế cạnh tranh cốt lõi.",
                 desc: [
                     "Phá bỏ giới hạn quy trình cũ, thiết kế lại cấu trúc cốt lõi.",
                     "Áp dụng các công cụ, phương thức tiên phong để tạo đột phá.",
@@ -825,13 +826,13 @@
                 result: [
                     "Đưa ra sáng kiến tạo bước nhảy vọt về năng suất.",
                     "Ra mắt mô hình hoạt động / sản phẩm mang tính cách mạng.",
-                    "Tái định hình lợi thế cạnh tranh của toàn bộ tổ chức.",
-                    "Tầm ảnh hưởng: Định hình lại luật chơi, tạo lợi thế cạnh tranh cốt lõi."
+                    "Tái định hình lợi thế cạnh tranh của toàn bộ tổ chức."
                 ]
             },
             9: {
                 title: "Level 9: Truyền cảm hứng", subtitle: "Kiến tạo Văn hóa", group: "III. Lãnh đạo",
                 classes: { bg: 'bg-emerald-100', textDark: 'text-emerald-800', textLight: 'text-emerald-600', border: 'border-emerald-200', bar: 'bg-emerald-500' },
+                impact: "Lan tỏa di sản, kiến tạo hệ sinh thái bền vững dài hạn.",
                 desc: [
                     "Dẫn dắt tổ chức bằng tầm nhìn, thay vì mệnh lệnh hành chính.",
                     "Định hình tư duy và hệ giá trị cốt lõi chung cho mọi người.",
@@ -845,8 +846,7 @@
                 result: [
                     "Xây dựng thành công văn hóa tự chủ, sáng tạo, gắn kết.",
                     "Nhân sự tự giác làm việc với mức năng lượng cao nhất.",
-                    "Tổ chức trở thành một hệ sinh thái phát triển bền vững.",
-                    "Tầm ảnh hưởng: Lan tỏa di sản, kiến tạo hệ sinh thái bền vững dài hạn."
+                    "Tổ chức trở thành một hệ sinh thái phát triển bền vững."
                 ]
             }
         };
@@ -905,7 +905,12 @@
                                 ${level}
                             </div>
                             <div>
-                                <h4 class="text-2xl font-black text-gray-800 tracking-tight">${data.title}</h4>
+                                <div class="flex flex-wrap items-center gap-3 mb-1">
+                                    <h4 class="text-2xl font-black text-gray-800 tracking-tight">${data.title}</h4>
+                                    <span class="px-3 py-1 ${c.bg} ${c.textDark} text-[11px] font-bold rounded-full shadow-sm flex items-center gap-1.5 border ${c.border}">
+                                        <i class="fas fa-layer-group opacity-70"></i> Tầm ảnh hưởng: ${data.impact}
+                                    </span>
+                                </div>
                                 <span class="text-sm ${c.textLight} font-semibold">${data.subtitle}</span>
                             </div>
                         </div>
