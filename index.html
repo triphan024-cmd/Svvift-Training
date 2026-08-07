@@ -911,7 +911,7 @@
                             </div>
                         </div>
                         <span class="${c.bg} ${c.textDark} text-xs font-bold px-4 py-2 rounded-full shadow-sm flex items-center gap-1.5 border ${c.border}">
-                            <i class="fas fa-layer-group opacity-70"></i> Tầm ảnh hưởng: ${data.impact}
+                            <i class="fas fa-layer-group opacity-70"></i> ${data.impact}
                         </span>
                     </div>
 
@@ -927,16 +927,7 @@
                             ${descHtml}
                         </div>
                         
-                        <!-- Column 2: Kỹ năng yêu cầu -->
-                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex items-center gap-2 mb-1">
-                                <i class="fas fa-bolt ${c.textLight}"></i>
-                                <h5 class="uppercase text-[11px] font-bold ${c.textDark} tracking-widest">Kỹ năng yêu cầu</h5>
-                            </div>
-                            ${skillsHtml}
-                        </div>
-
-                        <!-- Column 3: Kết quả kỳ vọng -->
+                        <!-- Column 2: Kết quả kỳ vọng -->
                         <div class="bg-white p-5 rounded-2xl border ${c.border} shadow-sm relative overflow-hidden hover:shadow-md transition-shadow">
                             <div class="absolute top-0 left-0 w-1 h-full ${c.bar}"></div>
                             <div class="flex items-center gap-2 mb-1">
@@ -944,6 +935,15 @@
                                 <h5 class="uppercase text-[11px] font-bold ${c.textDark} tracking-widest">Kết quả kỳ vọng</h5>
                             </div>
                             ${resultHtml}
+                        </div>
+
+                        <!-- Column 3: Kỹ năng yêu cầu -->
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-bolt ${c.textLight}"></i>
+                                <h5 class="uppercase text-[11px] font-bold ${c.textDark} tracking-widest">Kỹ năng yêu cầu</h5>
+                            </div>
+                            ${skillsHtml}
                         </div>
                         
                     </div>
