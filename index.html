@@ -179,7 +179,6 @@
             <div class="section-header">
                 <p class="section-meta">Phần I</p>
                 <h2 class="section-title">Hệ Thống Phát Triển Năng Lực</h2>
-                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Mô hình Kim tự tháp 3D — 9 cấp độ phát triển toàn diện. Nhấp vào từng tầng để xem chi tiết.</p>
             </div>
 
             <!-- Pyramid with Labels -->
@@ -465,26 +464,46 @@
     <script>
         // Draw 3D Pyramid SVG
         function draw3DPyramid() {
-            const R = 120;      // base half-width
-            const H = 400;      // total height (tall)
-            const gap = 4;      // gap between slices
-            const cx = 220;     // center X offset
-            const cy = 500;     // center Y offset (push down so top fits)
+            const R = 120;
+            const H = 400;
+            const gap = 4;
+            const cx = 400;     // centered in wider SVG
+            const cy = 500;
 
-            // Richer color palette per slice
+            // Colors: L1-3 Blue, L4-6 Orange/Amber, L7-9 Green
             const colors = {
                 1: {top: '#93C5FD', left: '#3B82F6', right: '#1D4ED8', accent: '#2563EB'},
                 2: {top: '#60A5FA', left: '#2563EB', right: '#1E40AF', accent: '#1D4ED8'},
                 3: {top: '#3B82F6', left: '#1D4ED8', right: '#1E3A8A', accent: '#1E40AF'},
-                4: {top: '#A5B4FC', left: '#6366F1', right: '#4338CA', accent: '#4F46E5'},
-                5: {top: '#818CF8', left: '#4F46E5', right: '#3730A3', accent: '#4338CA'},
-                6: {top: '#6366F1', left: '#4338CA', right: '#312E81', accent: '#3730A3'},
-                7: {top: '#FCD34D', left: '#F59E0B', right: '#B45309', accent: '#D97706'},
-                8: {top: '#FBBF24', left: '#D97706', right: '#92400E', accent: '#B45309'},
-                9: {top: '#F59E0B', left: '#B45309', right: '#78350F', accent: '#92400E'}
+                4: {top: '#FDBA74', left: '#F97316', right: '#C2410C', accent: '#EA580C'},
+                5: {top: '#FB923C', left: '#EA580C', right: '#9A3412', accent: '#C2410C'},
+                6: {top: '#F97316', left: '#C2410C', right: '#7C2D12', accent: '#9A3412'},
+                7: {top: '#86EFAC', left: '#22C55E', right: '#15803D', accent: '#16A34A'},
+                8: {top: '#4ADE80', left: '#16A34A', right: '#166534', accent: '#15803D'},
+                9: {top: '#22C55E', left: '#15803D', right: '#14532D', accent: '#166534'}
             };
 
-            // Less tilt: angle ~20° instead of 30°
+            // Level names for inside pyramid
+            const levelNames = {
+                1: 'Làm', 2: 'Biết', 3: 'Hiểu',
+                4: 'Quan sát', 5: 'Tổng hợp', 6: 'Phân tích',
+                7: 'Đào tạo', 8: 'Sáng tạo', 9: 'Truyền cảm hứng'
+            };
+
+            // Subtitles for right-side ribbons
+            const subtitles = {
+                1: 'Thực thi cơ bản', 2: 'Nhận thức thao tác', 3: 'Nắm bắt nguyên lý',
+                4: 'Tối ưu luồng việc', 5: 'Hệ thống hóa Dữ liệu', 6: 'Chẩn đoán & Ra quyết định',
+                7: 'Chuyển giao & Nhân bản', 8: 'Kiến trúc Hệ thống mới', 9: 'Kiến tạo Văn hóa'
+            };
+
+            // Group config
+            const groupBrackets = [
+                { levels: [1,2,3], name: 'I. NHÂN VIÊN', color: '#2563EB' },
+                { levels: [4,5,6], name: 'II. QUẢN LÝ', color: '#EA580C' },
+                { levels: [7,8,9], name: 'III. LÃNH ĐẠO', color: '#16A34A' }
+            ];
+
             function project(x, y, z) {
                 const ang = Math.PI / 9;
                 const px = (x - y) * Math.cos(ang);
@@ -492,45 +511,22 @@
                 return [px + cx, py + cy];
             }
 
-            const W = 900, VH = 600;
+            const W = 1000, VH = 600;
             let svg = `<svg viewBox="0 0 ${W} ${VH}" class="w-full h-full overflow-visible" style="max-height: 580px;">\n`;
 
-            // Shadow filter
+            // Filters
             svg += `<defs>
               <filter id="pyramidShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="3" dy="6" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.15"/>
               </filter>
-              <filter id="glowActive" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="6" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
             </defs>\n`;
 
-            // Level names for labels
-            const levelNames = {
-                1: 'Làm',
-                2: 'Biết',
-                3: 'Hiểu',
-                4: 'Quan sát',
-                5: 'Tổng hợp',
-                6: 'Phân tích',
-                7: 'Đào tạo',
-                8: 'Sáng tạo',
-                9: 'Truyền cảm hứng'
-            };
-
-            // Group brackets config (which levels belong to which group)
-            const groupBrackets = [
-                { levels: [1,2,3], name: 'NHÂN VIÊN', sub: 'Thực thi', color: '#2563EB', bg: '#DBEAFE' },
-                { levels: [4,5,6], name: 'QUẢN LÝ', sub: 'Hệ thống', color: '#4F46E5', bg: '#E0E7FF' },
-                { levels: [7,8,9], name: 'LÃNH ĐẠO', sub: 'Kiến tạo', color: '#D97706', bg: '#FEF3C7' }
-            ];
-
-            // Wrap pyramid in a group with shadow
-            svg += `<g filter="url(#pyramidShadow)">\n`;
-
-            // Store midpoints for label connector lines
+            // Store midpoints
             const sliceMids = {};
+            const sliceLeftMids = {};
+
+            // --- Draw pyramid ---
+            svg += `<g filter="url(#pyramidShadow)">\n`;
 
             for (let k = 1; k <= 9; k++) {
                 let z_bottom = (k - 1) * (H / 9) + gap;
@@ -541,21 +537,18 @@
                 let rt = R * (1 - z_top / H);
                 if (rt < 0) rt = 0;
 
-                // Left face (front-left)
                 const p1 = project(-rb, rb, z_bottom);
                 const p2 = project(rb, rb, z_bottom);
                 const p3 = project(rt, rt, z_top);
                 const p4 = project(-rt, rt, z_top);
                 const left_pts = `${p1[0].toFixed(1)},${p1[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)} ${p3[0].toFixed(1)},${p3[1].toFixed(1)} ${p4[0].toFixed(1)},${p4[1].toFixed(1)}`;
 
-                // Right face
                 const p1_r = project(rb, rb, z_bottom);
                 const p2_r = project(rb, -rb, z_bottom);
                 const p3_r = project(rt, -rt, z_top);
                 const p4_r = project(rt, rt, z_top);
                 const right_pts = `${p1_r[0].toFixed(1)},${p1_r[1].toFixed(1)} ${p2_r[0].toFixed(1)},${p2_r[1].toFixed(1)} ${p3_r[0].toFixed(1)},${p3_r[1].toFixed(1)} ${p4_r[0].toFixed(1)},${p4_r[1].toFixed(1)}`;
 
-                // Top face
                 const p1_t = project(rt, rt, z_top);
                 const p2_t = project(rt, -rt, z_top);
                 const p3_t = project(-rt, -rt, z_top);
@@ -564,26 +557,30 @@
 
                 const c = colors[k];
 
-                // Midpoint of the right face edge (for connector lines)
+                // Right edge midpoint (for right labels)
                 const z_mid = (z_bottom + z_top) / 2;
                 const r_mid = R * (1 - z_mid / H);
                 const rightEdge = project(r_mid, -r_mid, z_mid);
                 sliceMids[k] = { x: rightEdge[0], y: rightEdge[1], color: c.accent };
 
+                // Left edge midpoint (for left group labels)
+                const leftEdge = project(-r_mid, r_mid, z_mid);
+                sliceLeftMids[k] = { x: leftEdge[0], y: leftEdge[1] };
+
                 let group = `<g id="svg-slice-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;">\n`;
 
-                // Faces with thin white stroke for separation
-                group += `  <polygon points="${left_pts}" fill="${c.left}" stroke="rgba(255,255,255,0.15)" stroke-width="1" />\n`;
-                group += `  <polygon points="${right_pts}" fill="${c.right}" stroke="rgba(255,255,255,0.15)" stroke-width="1" />\n`;
+                group += `  <polygon points="${left_pts}" fill="${c.left}" stroke="rgba(255,255,255,0.2)" stroke-width="1" />\n`;
+                group += `  <polygon points="${right_pts}" fill="${c.right}" stroke="rgba(255,255,255,0.2)" stroke-width="1" />\n`;
                 if (rt > 0) {
-                    group += `  <polygon points="${top_pts}" fill="${c.top}" stroke="rgba(255,255,255,0.15)" stroke-width="1" />\n`;
+                    group += `  <polygon points="${top_pts}" fill="${c.top}" stroke="rgba(255,255,255,0.2)" stroke-width="1" />\n`;
                 }
 
-                // Level number text centered on left face
+                // Text INSIDE pyramid: "1. Làm" instead of "L1"
                 const tx = (p1[0] + p2[0] + p3[0] + p4[0]) / 4;
                 const ty = (p1[1] + p2[1] + p3[1] + p4[1]) / 4 + 5;
-                const fontSize = k <= 3 ? 14 : (k <= 6 ? 13 : 11);
-                group += `  <text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" fill="rgba(255,255,255,0.9)" font-weight="800" font-size="${fontSize}" font-family="'Be Vietnam Pro', sans-serif" text-anchor="middle" style="pointer-events:none;">L${k}</text>\n`;
+                const label = `${k}. ${levelNames[k]}`;
+                const fontSize = k <= 4 ? 12 : (k <= 7 ? 11 : 9);
+                group += `  <text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" fill="rgba(255,255,255,0.95)" font-weight="800" font-size="${fontSize}" font-family="'Be Vietnam Pro', sans-serif" text-anchor="middle" style="pointer-events:none;">${label}</text>\n`;
 
                 group += '</g>\n';
                 svg += group;
@@ -591,10 +588,31 @@
 
             svg += '</g>\n'; // end shadow group
 
-            // --- Draw label ribbons extending to the right ---
-            const ribbonStartX = 380;  // x position where ribbons begin
-            const ribbonW = 340;
-            const ribbonH = 38;
+            // --- LEFT SIDE: Group brackets (I. Nhân viên, II. Quản lý, III. Lãnh đạo) ---
+            const bracketX = 105;
+
+            groupBrackets.forEach(grp => {
+                const topLeft = sliceLeftMids[grp.levels[grp.levels.length - 1]];
+                const botLeft = sliceLeftMids[grp.levels[0]];
+                const topY = topLeft.y - 18;
+                const botY = botLeft.y + 18;
+                const midY = (topY + botY) / 2;
+
+                // Vertical bracket line
+                svg += `<line x1="${bracketX}" y1="${topY.toFixed(1)}" x2="${bracketX}" y2="${botY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
+                // Top tick
+                svg += `<line x1="${bracketX}" y1="${topY.toFixed(1)}" x2="${bracketX + 8}" y2="${topY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
+                // Bottom tick
+                svg += `<line x1="${bracketX}" y1="${botY.toFixed(1)}" x2="${bracketX + 8}" y2="${botY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
+
+                // Group name (horizontal, to the left of the bracket)
+                svg += `<text x="${bracketX - 12}" y="${midY.toFixed(1)}" fill="${grp.color}" font-weight="900" font-size="13" font-family="'Be Vietnam Pro', sans-serif" text-anchor="end" dominant-baseline="central" style="letter-spacing:1px;">${grp.name}</text>\n`;
+            });
+
+            // --- RIGHT SIDE: Subtitle ribbons ---
+            const ribbonStartX = 610;
+            const ribbonW = 280;
+            const ribbonH = 36;
 
             for (let k = 1; k <= 9; k++) {
                 const mid = sliceMids[k];
@@ -603,48 +621,17 @@
 
                 // Connector line from pyramid to ribbon
                 svg += `<line x1="${mid.x.toFixed(1)}" y1="${mid.y.toFixed(1)}" x2="${ribbonStartX}" y2="${mid.y.toFixed(1)}" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,3" />\n`;
-                // Dot on pyramid edge
                 svg += `<circle cx="${mid.x.toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="white" stroke="${c.accent}" stroke-width="2" />\n`;
 
-                // Ribbon background
+                // Ribbon
                 svg += `<g id="svg-label-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;">`;
                 svg += `<rect x="${ribbonStartX}" y="${ry.toFixed(1)}" width="${ribbonW}" height="${ribbonH}" rx="6" fill="${c.accent}" opacity="0.9" />\n`;
 
-                // Level number badge (circle)
-                const badgeCx = ribbonStartX + 22;
-                const badgeCy = mid.y;
-                svg += `<circle cx="${badgeCx}" cy="${badgeCy.toFixed(1)}" r="13" fill="rgba(255,255,255,0.25)" />\n`;
-                svg += `<text x="${badgeCx}" y="${(badgeCy + 4.5).toFixed(1)}" fill="white" font-weight="900" font-size="12" font-family="'Be Vietnam Pro', sans-serif" text-anchor="middle" style="pointer-events:none;">0${k}</text>\n`;
-
-                // Level title text
-                svg += `<text x="${ribbonStartX + 44}" y="${(mid.y - 3).toFixed(1)}" fill="white" font-weight="800" font-size="13" font-family="'Be Vietnam Pro', sans-serif" text-transform="uppercase" style="pointer-events:none;">Level ${k}: ${levelNames[k]}</text>\n`;
-                // Subtitle
-                const subtitles = {1:'Thực thi cơ bản', 2:'Nhận thức thao tác', 3:'Nắm bắt nguyên lý', 4:'Tối ưu luồng việc', 5:'Hệ thống hóa Dữ liệu', 6:'Chẩn đoán & Ra quyết định', 7:'Chuyển giao & Nhân bản', 8:'Kiến trúc Hệ thống mới', 9:'Kiến tạo Văn hóa'};
-                svg += `<text x="${ribbonStartX + 44}" y="${(mid.y + 12).toFixed(1)}" fill="rgba(255,255,255,0.7)" font-weight="500" font-size="10" font-family="'Inter', sans-serif" style="pointer-events:none;">${subtitles[k]}</text>\n`;
+                // Subtitle text
+                svg += `<text x="${ribbonStartX + 18}" y="${(mid.y + 5).toFixed(1)}" fill="white" font-weight="700" font-size="13" font-family="'Be Vietnam Pro', sans-serif" style="pointer-events:none;">${subtitles[k]}</text>\n`;
 
                 svg += `</g>\n`;
             }
-
-            // --- Draw group brackets on the far right ---
-            const bracketX = ribbonStartX + ribbonW + 20;
-
-            groupBrackets.forEach(grp => {
-                const topMid = sliceMids[grp.levels[0]];
-                const botMid = sliceMids[grp.levels[grp.levels.length - 1]];
-                const topY = topMid.y - ribbonH / 2;
-                const botY = botMid.y + ribbonH / 2;
-                const midY = (topY + botY) / 2;
-
-                // Vertical bracket line
-                svg += `<line x1="${bracketX}" y1="${topY.toFixed(1)}" x2="${bracketX}" y2="${botY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
-                // Top tick
-                svg += `<line x1="${bracketX - 6}" y1="${topY.toFixed(1)}" x2="${bracketX}" y2="${topY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
-                // Bottom tick
-                svg += `<line x1="${bracketX - 6}" y1="${botY.toFixed(1)}" x2="${bracketX}" y2="${botY.toFixed(1)}" stroke="${grp.color}" stroke-width="3" stroke-linecap="round" />\n`;
-
-                // Group name (rotated)
-                svg += `<text x="${bracketX + 16}" y="${midY.toFixed(1)}" fill="${grp.color}" font-weight="900" font-size="12" font-family="'Be Vietnam Pro', sans-serif" text-anchor="middle" transform="rotate(-90, ${bracketX + 16}, ${midY.toFixed(1)})" style="letter-spacing:2px;">${grp.name}</text>\n`;
-            });
 
             svg += '</svg>';
             document.getElementById('svg-pyramid-container').innerHTML = svg;
@@ -655,7 +642,7 @@
             1: {
                 title: "Level 1: Làm",
                 subtitle: "Thực thi cơ bản",
-                group: "Nhóm Nhân viên",
+                group: "I. Nhân viên",
                 classes: { bg: 'bg-blue-100', textDark: 'text-blue-800', textLight: 'text-blue-600', border: 'border-blue-200', bar: 'bg-blue-500' },
                 desc: "Làm chính xác theo hướng dẫn, quy định đã được ban hành mà không cần thắc mắc.",
                 result: "Hoàn thành tác vụ bật công tắc máy đúng thời điểm được yêu cầu.",
@@ -664,7 +651,7 @@
             2: {
                 title: "Level 2: Biết",
                 subtitle: "Nhận thức thao tác",
-                group: "Nhóm Nhân viên",
+                group: "I. Nhân viên",
                 classes: { bg: 'bg-blue-100', textDark: 'text-blue-800', textLight: 'text-blue-600', border: 'border-blue-200', bar: 'bg-blue-500' },
                 desc: "Nắm được kết quả của hành động mình đang làm, giúp thao tác trơn tru và tự tin hơn.",
                 result: "Bật công tắc đúng cách để máy chạy êm, đạt công suất tiêu chuẩn, không chập cháy.",
@@ -673,7 +660,7 @@
             3: {
                 title: "Level 3: Hiểu",
                 subtitle: "Nắm bắt nguyên lý",
-                group: "Nhóm Nhân viên",
+                group: "I. Nhân viên",
                 classes: { bg: 'bg-blue-100', textDark: 'text-blue-800', textLight: 'text-blue-600', border: 'border-blue-200', bar: 'bg-blue-500' },
                 desc: "Hiểu rõ cơ chế vận hành đằng sau thao tác để tự giải quyết các sự cố phát sinh.",
                 result: "Khi máy không chạy, tự kiểm tra nguồn, cầu chì/motor để khắc phục tại chỗ.",
@@ -682,8 +669,8 @@
             4: {
                 title: "Level 4: Quan sát",
                 subtitle: "Tối ưu luồng việc",
-                group: "Nhóm Quản lý",
-                classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                group: "II. Quản lý",
+                classes: { bg: 'bg-orange-100', textDark: 'text-orange-800', textLight: 'text-orange-600', border: 'border-orange-200', bar: 'bg-orange-500' },
                 desc: "Đánh giá liên tục cách làm của bản thân và đồng đội để tìm điểm nghẽn, loại bỏ thao tác thừa.",
                 result: "Thiết lập lại vị trí đặt vật tư, cắt giảm 15% thời gian di chuyển lãng phí.",
                 skills: "Tư duy cải tiến (Kaizen), nhạy bén, giám sát hiện trường."
@@ -691,8 +678,8 @@
             5: {
                 title: "Level 5: Tổng hợp",
                 subtitle: "Hệ thống hóa Dữ liệu",
-                group: "Nhóm Quản lý",
-                classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                group: "II. Quản lý",
+                classes: { bg: 'bg-orange-100', textDark: 'text-orange-800', textLight: 'text-orange-600', border: 'border-orange-200', bar: 'bg-orange-500' },
                 desc: "Gom nhặt dữ liệu, thông tin rời rạc từ thực tế để xây dựng báo cáo tổng quan.",
                 result: "Hoàn thiện báo cáo cuối tuần, tóm tắt chính xác Wins và tiến độ các stages.",
                 skills: "Sử dụng dashboard quản trị, xâu chuỗi thông tin, trình bày báo cáo."
@@ -700,8 +687,8 @@
             6: {
                 title: "Level 6: Phân tích",
                 subtitle: "Chẩn đoán & Ra quyết định",
-                group: "Nhóm Quản lý",
-                classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                group: "II. Quản lý",
+                classes: { bg: 'bg-orange-100', textDark: 'text-orange-800', textLight: 'text-orange-600', border: 'border-orange-200', bar: 'bg-orange-500' },
                 desc: "Nhìn sâu vào báo cáo để bắt đúng 'bệnh' hệ thống và đưa giải pháp tận gốc.",
                 result: "Nhận diện Red Flags thất thoát vật liệu (Yield), đề xuất quy trình kiểm chéo mới.",
                 skills: "Tư duy phản biện, phân tích dữ liệu, Data-driven decision making."
@@ -709,8 +696,8 @@
             7: {
                 title: "Level 7: Đào tạo",
                 subtitle: "Chuyển giao & Nhân bản",
-                group: "Nhóm Lãnh đạo",
-                classes: { bg: 'bg-amber-100', textDark: 'text-amber-800', textLight: 'text-amber-600', border: 'border-amber-200', bar: 'bg-amber-500' },
+                group: "III. Lãnh đạo",
+                classes: { bg: 'bg-green-100', textDark: 'text-green-800', textLight: 'text-green-600', border: 'border-green-200', bar: 'bg-green-500' },
                 desc: "Đóng gói toàn bộ kiến thức, kinh nghiệm thành hệ thống tài liệu chuẩn để huấn luyện và xây dựng đội ngũ kế thừa.",
                 result: "Tạo ra được các thế hệ nhân sự có năng lực tương đương hoặc xuất sắc hơn để duy trì hệ thống.",
                 skills: "Kỹ năng sư phạm, biên soạn tài liệu, cố vấn (Mentoring) & Khai vấn (Coaching)."
@@ -718,8 +705,8 @@
             8: {
                 title: "Level 8: Sáng tạo",
                 subtitle: "Kiến trúc Hệ thống mới",
-                group: "Nhóm Lãnh đạo",
-                classes: { bg: 'bg-amber-100', textDark: 'text-amber-800', textLight: 'text-amber-600', border: 'border-amber-200', bar: 'bg-amber-500' },
+                group: "III. Lãnh đạo",
+                classes: { bg: 'bg-green-100', textDark: 'text-green-800', textLight: 'text-green-600', border: 'border-green-200', bar: 'bg-green-500' },
                 desc: "Phá bỏ giới hạn quy trình cũ, áp dụng công cụ/cách thức hoàn toàn mới tạo bước nhảy vọt về năng suất.",
                 result: "Đưa ra sáng kiến thiết kế lại toàn bộ luồng sản xuất giúp tăng 50% sản lượng không cần thêm nhân sự.",
                 skills: "Tư duy đột phá (Out-of-the-box), quản trị sự thay đổi (Change management), am hiểu công nghệ."
@@ -727,8 +714,8 @@
             9: {
                 title: "Level 9: Truyền cảm hứng",
                 subtitle: "Kiến tạo Văn hóa",
-                group: "Nhóm Lãnh đạo",
-                classes: { bg: 'bg-amber-100', textDark: 'text-amber-800', textLight: 'text-amber-600', border: 'border-amber-200', bar: 'bg-amber-500' },
+                group: "III. Lãnh đạo",
+                classes: { bg: 'bg-green-100', textDark: 'text-green-800', textLight: 'text-green-600', border: 'border-green-200', bar: 'bg-green-500' },
                 desc: "Dẫn dắt tổ chức không phải bằng mệnh lệnh mà bằng tầm nhìn, định hình tư duy và hệ giá trị chung cho toàn bộ nhân sự.",
                 result: "Xây dựng thành công văn hóa 'Work Smarter, Not Harder', nhân sự tự giác làm việc với năng lượng cao nhất.",
                 skills: "Lãnh đạo bằng tầm nhìn (Visionary Leadership), Trí tuệ cảm xúc (EQ), Kỹ năng truyền đạt tạo ảnh hưởng."
