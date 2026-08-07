@@ -186,13 +186,13 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     
                     <!-- LEFT: PYRAMID VISUAL -->
-                    <div class="lg:col-span-6 flex justify-center items-center relative min-h-[420px]" id="svg-pyramid-container">
+                    <div class="lg:col-span-6 flex justify-center items-center relative min-h-[620px]" id="svg-pyramid-container">
                         <!-- SVG sẽ được render bằng Javascript -->
                     </div>
 
                     <!-- RIGHT: DETAILS PANEL -->
                     <div class="lg:col-span-6 h-full flex items-center">
-                        <div id="level-details-container" class="w-full bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_15px_40px_rgb(0,0,0,0.06)] min-h-[420px] flex flex-col justify-center">
+                        <div id="level-details-container" class="w-full bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_15px_40px_rgb(0,0,0,0.06)] min-h-[620px] flex flex-col justify-center">
                             <!-- Detail content will be injected here -->
                         </div>
                     </div>
@@ -469,11 +469,11 @@
     <script>
         // Draw 3D Pyramid SVG
         function draw3DPyramid() {
-            const R = 150;
-            const H = 220;
-            const gap = 3;
-            const cx = 200;
-            const cy = 290; // offset to center
+            const R = 140;
+            const H = 420;
+            const gap = 5;
+            const cx = 190;
+            const cy = 520; // offset to center
 
             const colors = {
                 1: {top: '#60A5FA', left: '#3B82F6', right: '#2563EB', text: '#DBEAFE'},
@@ -494,7 +494,7 @@
                 return [px + cx, py + cy];
             }
 
-            let svg = '<svg viewBox="0 0 540 450" class="w-full h-full drop-shadow-2xl overflow-visible" style="max-height: 440px;">\n';
+            let svg = '<svg viewBox="0 0 560 700" class="w-full h-full drop-shadow-2xl overflow-visible" style="max-height: 680px;">\n';
 
             // Groups labels config
             const groups = {
@@ -554,7 +554,7 @@
                     const r_mid = R * (1 - z_mid / H);
                     const rp = project(r_mid, -r_mid, z_mid);
                     const lineY = rp[1];
-                    const labelX = 360;
+                    const labelX = 350;
                     
                     // Dotted line
                     group += `  <line x1="${rp[0]}" y1="${lineY}" x2="${labelX}" y2="${lineY}" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="4,4" />\n`;
