@@ -511,7 +511,7 @@
                 return [px + cx, py + cy];
             }
 
-            const W = 1200, VH = 600;
+            const W = 1400, VH = 600;
             let svg = `<svg viewBox="0 0 ${W} ${VH}" class="w-full h-full overflow-visible" style="max-height: 580px;">\n`;
 
             // Filters
@@ -634,8 +634,8 @@
                 // Calculate the actual right-most edge of the pyramid at this level
                 const rightEdgeX = cx + 2 * (mid.x - cx);
                 
-                // Align all right labels vertically
-                const startX = 820; 
+                // Align all right labels vertically, moved further right for longer dotted lines
+                const startX = 960; 
                 const pillH = 38;
                 const py = mid.y - pillH / 2;
                 
@@ -657,6 +657,9 @@
                 // Left text (Title)
                 svg += `<text x="${(startX + 18).toFixed(1)}" y="${(mid.y + 1).toFixed(1)}" fill="${c.accent}" font-weight="900" font-size="14" font-family="'Be Vietnam Pro', sans-serif" dominant-baseline="central" style="pointer-events:none;">${k}. ${levelNames[k]}</text>\n`;
                 
+                // Level text inside the pyramid
+                svg += `<text x="${mid.x.toFixed(1)}" y="${mid.y.toFixed(1)}" fill="white" font-weight="800" font-size="12" font-family="'Inter', sans-serif" dominant-baseline="central" text-anchor="middle" transform="rotate(-20, ${mid.x.toFixed(1)}, ${mid.y.toFixed(1)})" style="pointer-events:none; opacity:0.9;">Level ${k}</text>\n`;
+
                 // Right text (Subtitle)
                 svg += `<text x="${(badgeX + badgeW/2 - 1).toFixed(1)}" y="${(mid.y + 1).toFixed(1)}" fill="white" font-weight="600" font-size="11.5" font-family="'Inter', sans-serif" dominant-baseline="central" text-anchor="middle" style="pointer-events:none;">${subtitles[k]}</text>\n`;
 
@@ -719,7 +722,7 @@
                     "Có khả năng tự giải quyết các sự cố phát sinh trong phạm vi."
                 ],
                 skills: [
-                    "Tư duy logic nhân - quả (Cause & Effect).",
+                    "Tư duy logic nguyên nhân - kết quả.",
                     "Kỹ năng xử lý sự cố (Troubleshooting) tại chỗ.",
                     "Khả năng đánh giá rủi ro trong công việc."
                 ],
@@ -905,12 +908,8 @@
                                 ${level}
                             </div>
                             <div>
-                                <div class="flex flex-wrap items-center gap-3 mb-1">
-                                    <h4 class="text-2xl font-black text-gray-800 tracking-tight">${data.title}</h4>
-                                    <span class="px-3 py-1 ${c.bg} ${c.textDark} text-[11px] font-bold rounded-full shadow-sm flex items-center gap-1.5 border ${c.border}">
-                                        <i class="fas fa-layer-group opacity-70"></i> Tầm ảnh hưởng: ${data.impact}
-                                    </span>
-                                </div>
+                            <div>
+                                <h4 class="text-2xl font-black text-gray-800 tracking-tight">${data.title}</h4>
                                 <span class="text-sm ${c.textLight} font-semibold">${data.subtitle}</span>
                             </div>
                         </div>
@@ -943,9 +942,14 @@
                         <!-- Column 3: Kết quả kỳ vọng -->
                         <div class="bg-white p-5 rounded-2xl border ${c.border} shadow-sm relative overflow-hidden hover:shadow-md transition-shadow">
                             <div class="absolute top-0 left-0 w-1 h-full ${c.bar}"></div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <i class="fas fa-star ${c.textLight}"></i>
-                                <h5 class="uppercase text-[11px] font-bold ${c.textDark} tracking-widest">Kết quả kỳ vọng</h5>
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-star ${c.textLight}"></i>
+                                    <h5 class="uppercase text-[11px] font-bold ${c.textDark} tracking-widest">Kết quả kỳ vọng</h5>
+                                </div>
+                                <span class="px-2 py-1 ${c.bg} ${c.textDark} text-[9.5px] font-bold rounded-full shadow-sm flex items-center gap-1 border ${c.border}" style="white-space:nowrap;">
+                                    <i class="fas fa-layer-group opacity-70"></i> Tầm ảnh hưởng: ${data.impact}
+                                </span>
                             </div>
                             ${resultHtml}
                         </div>
