@@ -467,20 +467,20 @@
             const R = 120;
             const H = 400;
             const gap = 4;
-            const cx = 380;
+            const cx = 500;     // shifted right for better left spacing
             const cy = 500;
 
-            // Colors: L1-3 Blue, L4-6 Orange/Amber, L7-9 Green
+            // Vibrant saturated colors matching reference infographic
             const colors = {
-                1: {top: '#93C5FD', left: '#3B82F6', right: '#1D4ED8', accent: '#2563EB'},
-                2: {top: '#60A5FA', left: '#2563EB', right: '#1E40AF', accent: '#1D4ED8'},
-                3: {top: '#3B82F6', left: '#1D4ED8', right: '#1E3A8A', accent: '#1E40AF'},
-                4: {top: '#FDBA74', left: '#F97316', right: '#C2410C', accent: '#EA580C'},
-                5: {top: '#FB923C', left: '#EA580C', right: '#9A3412', accent: '#C2410C'},
-                6: {top: '#F97316', left: '#C2410C', right: '#7C2D12', accent: '#9A3412'},
-                7: {top: '#86EFAC', left: '#22C55E', right: '#15803D', accent: '#16A34A'},
-                8: {top: '#4ADE80', left: '#16A34A', right: '#166534', accent: '#15803D'},
-                9: {top: '#22C55E', left: '#15803D', right: '#14532D', accent: '#166534'}
+                1: {top: '#3B3E9E', left: '#2A2C87', right: '#1B1C5E', accent: '#2A2C87'}, // Deep Blue
+                2: {top: '#4C50B5', left: '#373A9E', right: '#242673', accent: '#373A9E'},
+                3: {top: '#5E62CC', left: '#4549B5', right: '#2D3088', accent: '#4549B5'},
+                4: {top: '#EF4444', left: '#E11D48', right: '#9F1239', accent: '#E11D48'}, // Red
+                5: {top: '#F97316', left: '#EA580C', right: '#9A3412', accent: '#EA580C'}, // Orange
+                6: {top: '#E4F535', left: '#C4D515', right: '#97A80C', accent: '#C4D515'}, // Yellow-Green
+                7: {top: '#2DD4BF', left: '#14B8A6', right: '#0F766E', accent: '#14B8A6'}, // Teal
+                8: {top: '#6EE7B7', left: '#34D399', right: '#059669', accent: '#34D399'},
+                9: {top: '#A7F3D0', left: '#10B981', right: '#047857', accent: '#10B981'}
             };
 
             // Level names (for right ribbons)
@@ -497,11 +497,11 @@
                 7: 'Chuyển giao & Nhân bản', 8: 'Kiến trúc Hệ thống mới', 9: 'Kiến tạo Văn hóa'
             };
 
-            // Group config with icons (FontAwesome unicode)
+            // Group config with icons
             const groupBrackets = [
-                { levels: [1,2,3], name: 'I. NHÂN VIÊN', color: '#2563EB', bg: '#DBEAFE', icon: '\uf007' },
-                { levels: [4,5,6], name: 'II. QUẢN LÝ', color: '#EA580C', bg: '#FFF7ED', icon: '\uf0b1' },
-                { levels: [7,8,9], name: 'III. LÃNH ĐẠO', color: '#16A34A', bg: '#F0FDF4', icon: '\uf521' }
+                { levels: [1,2,3], name: 'I. NHÂN VIÊN', color: '#2A2C87', bg: '#EEF2FF', icon: '\uf013' }, // cog
+                { levels: [4,5,6], name: 'II. QUẢN LÝ', color: '#E11D48', bg: '#FFF1F2', icon: '\uf0e8' }, // sitemap
+                { levels: [7,8,9], name: 'III. LÃNH ĐẠO', color: '#0F766E', bg: '#F0FDFA', icon: '\uf135' }  // rocket
             ];
 
             function project(x, y, z) {
@@ -511,7 +511,7 @@
                 return [px + cx, py + cy];
             }
 
-            const W = 1000, VH = 600;
+            const W = 1200, VH = 600;
             let svg = `<svg viewBox="0 0 ${W} ${VH}" class="w-full h-full overflow-visible" style="max-height: 580px;">\n`;
 
             // Filters
@@ -606,13 +606,13 @@
                 const midY = (topY + botY) / 2;
                 const cardH = botY - topY;
                 const cardW = 150;
-                const cardX = 30;
+                const cardX = 40; // Increased spacing on the left
 
                 // Card background with rounded corners
                 svg += `<rect x="${cardX}" y="${topY.toFixed(1)}" width="${cardW}" height="${cardH.toFixed(1)}" rx="12" fill="${grp.bg}" stroke="${grp.color}" stroke-width="1.5" stroke-opacity="0.3" />\n`;
                 
-                // Connector line from card to pyramid
-                svg += `<line x1="${cardX + cardW}" y1="${midY.toFixed(1)}" x2="${topLeft.x - 5}" y2="${midY.toFixed(1)}" stroke="${grp.color}" stroke-width="1.5" stroke-dasharray="4,3" stroke-opacity="0.5" />\n`;
+                // Connector line from card to pyramid (with gap)
+                svg += `<line x1="${cardX + cardW}" y1="${midY.toFixed(1)}" x2="${topLeft.x - 20}" y2="${midY.toFixed(1)}" stroke="${grp.color}" stroke-width="1.5" stroke-dasharray="4,3" stroke-opacity="0.5" />\n`;
 
                 // Icon circle
                 const iconCx = cardX + 30;
@@ -629,21 +629,25 @@
             });
 
             // --- RIGHT SIDE: Ribbons extending FROM pyramid edge ---
-            const ribbonEndX = 920;  // where ribbons end
+            const ribbonEndX = 1160;  // wider to fill viewBox
             const ribbonH = 38;
 
             for (let k = 1; k <= 9; k++) {
                 const mid = sliceMids[k];
                 const c = colors[k];
                 const ry = mid.y - ribbonH / 2;
-                // Ribbon starts right at the pyramid edge
-                const ribbonStartX = mid.x;
+                // Ribbon starts with a larger gap from pyramid edge
+                const ribbonStartX = mid.x + 40;
                 const rw = ribbonEndX - ribbonStartX;
 
                 svg += `<g id="svg-label-${k}" class="cursor-pointer" onclick="showLevel(${k})" style="transition: all 0.3s ease;" filter="url(#ribbonShadow)">`;
 
-                // Main ribbon rect (starts from pyramid edge, extends to the right)
+                // Main ribbon rect (starts with a gap from pyramid edge, extends to the right)
                 svg += `<rect x="${ribbonStartX.toFixed(1)}" y="${ry.toFixed(1)}" width="${rw.toFixed(1)}" height="${ribbonH}" rx="0 6 6 0" fill="${c.accent}" opacity="0.92" />\n`;
+                
+                // Add a dot connector to bridge the gap
+                svg += `<circle cx="${(mid.x + 10).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" />\n`;
+                svg += `<circle cx="${(mid.x + 25).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" />\n`;
                 // Right rounded end cap
                 svg += `<rect x="${(ribbonEndX - 8).toFixed(1)}" y="${ry.toFixed(1)}" width="8" height="${ribbonH}" rx="4" fill="${c.accent}" opacity="0.92" />\n`;
 
