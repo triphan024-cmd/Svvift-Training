@@ -631,11 +631,11 @@
                 const mid = sliceMids[k];
                 const c = colors[k];
                 
-                const startX = mid.x + 35;
+                const startX = mid.x + 25; // Adjusted closer for global balance
                 const pillH = 38;
                 const py = mid.y - pillH / 2;
                 
-                const pillW = 340; 
+                const pillW = 320; // Slightly narrower for better balance
                 const badgeW = 180;
                 const badgeX = startX + pillW - badgeW;
                 
@@ -646,86 +646,179 @@
                 svg += `<circle cx="${(mid.x + 24).toFixed(1)}" cy="${mid.y.toFixed(1)}" r="3" fill="${c.accent}" />\n`;
 
                 // White pill base
-                svg += `<rect x="${startX.toFixed(1)}" y="${py.toFixed(1)}" width="${pillW}" height="${pillH}" rx="${pillH/2}" fill="white" stroke="${c.accent}" stroke-width="1.5" opacity="0.95" />\n`;
-                
-                // Colored badge inside for subtitle
-                svg += `<rect x="${badgeX.toFixed(1)}" y="${(py + 2).toFixed(1)}" width="${badgeW - 2}" height="${pillH - 4}" rx="${(pillH - 4)/2}" fill="${c.accent}" />\n`;
-
-                // Left text (Title)
-                svg += `<text x="${(startX + 18).toFixed(1)}" y="${(mid.y + 1).toFixed(1)}" fill="${c.accent}" font-weight="900" font-size="14" font-family="'Be Vietnam Pro', sans-serif" dominant-baseline="central" style="pointer-events:none;">${k}. ${levelNames[k]}</text>\n`;
-                
-                // Right text (Subtitle)
-                svg += `<text x="${(badgeX + badgeW/2 - 1).toFixed(1)}" y="${(mid.y + 1).toFixed(1)}" fill="white" font-weight="600" font-size="11.5" font-family="'Inter', sans-serif" dominant-baseline="central" text-anchor="middle" style="pointer-events:none;">${subtitles[k]}</text>\n`;
-
-                svg += `</g>\n`;
-            }
-
-            svg += '</svg>';
-            document.getElementById('svg-pyramid-container').innerHTML = svg;
-        }
-
-        // --- Data and Interaction ---
-        const levelsData = {
+                svg += `<rect x="${startX.toFixed(1)}" y="${py.toFix        const levelsData = {
             1: {
-                title: "Level 1: Làm",
-                subtitle: "Thực thi cơ bản",
-                group: "I. Nhân viên",
-                classes: { bg: 'bg-blue-100', textDark: 'text-blue-800', textLight: 'text-blue-600', border: 'border-blue-200', bar: 'bg-blue-500' },
-                desc: "Làm chính xác theo hướng dẫn, quy định đã được ban hành mà không cần thắc mắc.",
-                result: "Hoàn thành tác vụ bật công tắc máy đúng thời điểm được yêu cầu.",
-                skills: "Tính kỷ luật, sự tuân thủ, khả năng lắng nghe và làm đúng theo chỉ thị."
+                title: "Level 1: Làm", subtitle: "Thực thi cơ bản", group: "I. Nhân viên",
+                classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                desc: [
+                    "Làm chính xác theo hướng dẫn, quy định đã được ban hành.",
+                    "Không tự ý thay đổi quy trình khi chưa được phép.",
+                    "Tập trung hoàn thành công việc được giao đúng hạn."
+                ],
+                skills: [
+                    "Tính kỷ luật và sự tuân thủ cao.",
+                    "Khả năng lắng nghe và thực hiện đúng chỉ thị.",
+                    "Sự cẩn thận, chú ý đến từng chi tiết nhỏ."
+                ],
+                result: [
+                    "Hoàn thành tác vụ đúng tiêu chuẩn và thời gian.",
+                    "Không để xảy ra lỗi do làm sai quy trình cốt lõi.",
+                    "Tạo ra sản phẩm/dịch vụ đạt chất lượng cơ bản."
+                ]
             },
             2: {
-                title: "Level 2: Biết",
-                subtitle: "Nhận thức thao tác",
-                group: "I. Nhân viên",
-                classes: { bg: 'bg-blue-100', textDark: 'text-blue-800', textLight: 'text-blue-600', border: 'border-blue-200', bar: 'bg-blue-500' },
-                desc: "Nắm được kết quả của hành động mình đang làm, giúp thao tác trơn tru và tự tin hơn.",
-                result: "Bật công tắc đúng cách để máy chạy êm, đạt công suất tiêu chuẩn, không chập cháy.",
-                skills: "Ghi nhớ quy trình, nhận thức cơ bản về luồng công việc cá nhân."
+                title: "Level 2: Biết", subtitle: "Nhận thức thao tác", group: "I. Nhân viên",
+                classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                desc: [
+                    "Nắm được kết quả và ý nghĩa của hành động mình đang làm.",
+                    "Nhận thức được luồng công việc liền trước và liền sau.",
+                    "Thực hiện thao tác trơn tru, tự tin và chủ động hơn."
+                ],
+                skills: [
+                    "Khả năng ghi nhớ và áp dụng quy trình.",
+                    "Nhận thức cơ bản về chuỗi giá trị công việc.",
+                    "Kỹ năng giao tiếp và phối hợp nhóm cơ bản."
+                ],
+                result: [
+                    "Vận hành công việc êm ái, đạt công suất tiêu chuẩn.",
+                    "Giảm thiểu các lỗi lặt vặt do thiếu tập trung.",
+                    "Chủ động báo cáo khi phát hiện điểm bất thường."
+                ]
             },
             3: {
-                title: "Level 3: Hiểu",
-                subtitle: "Nắm bắt nguyên lý",
-                group: "I. Nhân viên",
-                classes: { bg: 'bg-blue-100', textDark: 'text-blue-800', textLight: 'text-blue-600', border: 'border-blue-200', bar: 'bg-blue-500' },
-                desc: "Hiểu rõ cơ chế vận hành đằng sau thao tác để tự giải quyết các sự cố phát sinh.",
-                result: "Khi máy không chạy, tự kiểm tra nguồn, cầu chì/motor để khắc phục tại chỗ.",
-                skills: "Tư duy logic nhân - quả, troubleshooting cơ bản."
+                title: "Level 3: Hiểu", subtitle: "Nắm bắt nguyên lý", group: "I. Nhân viên",
+                classes: { bg: 'bg-indigo-100', textDark: 'text-indigo-800', textLight: 'text-indigo-600', border: 'border-indigo-200', bar: 'bg-indigo-500' },
+                desc: [
+                    "Hiểu rõ cơ chế vận hành đằng sau từng thao tác.",
+                    "Phân tích được nguyên nhân - kết quả của các sự vụ.",
+                    "Có khả năng tự giải quyết các sự cố phát sinh trong phạm vi."
+                ],
+                skills: [
+                    "Tư duy logic nhân - quả (Cause & Effect).",
+                    "Kỹ năng xử lý sự cố (Troubleshooting) tại chỗ.",
+                    "Khả năng đánh giá rủi ro trong công việc."
+                ],
+                result: [
+                    "Tự kiểm tra và khắc phục lỗi mà không cần gọi hỗ trợ.",
+                    "Duy trì hoạt động liên tục, không bị gián đoạn.",
+                    "Tối ưu hóa các thao tác cá nhân để làm việc nhanh hơn."
+                ]
             },
             4: {
-                title: "Level 4: Quan sát",
-                subtitle: "Tối ưu luồng việc",
-                group: "II. Quản lý",
-                classes: { bg: 'bg-orange-100', textDark: 'text-orange-800', textLight: 'text-orange-600', border: 'border-orange-200', bar: 'bg-orange-500' },
-                desc: "Đánh giá liên tục cách làm của bản thân và đồng đội để tìm điểm nghẽn, loại bỏ thao tác thừa.",
-                result: "Thiết lập lại vị trí đặt vật tư, cắt giảm 15% thời gian di chuyển lãng phí.",
-                skills: "Tư duy cải tiến (Kaizen), nhạy bén, giám sát hiện trường."
+                title: "Level 4: Quan sát", subtitle: "Tối ưu luồng việc", group: "II. Quản lý",
+                classes: { bg: 'bg-rose-100', textDark: 'text-rose-800', textLight: 'text-rose-600', border: 'border-rose-200', bar: 'bg-rose-500' },
+                desc: [
+                    "Đánh giá liên tục cách làm của bản thân và đồng đội.",
+                    "Tìm ra các điểm nghẽn (bottlenecks) trong quy trình hiện tại.",
+                    "Đề xuất loại bỏ các thao tác thừa, lãng phí thời gian."
+                ],
+                skills: [
+                    "Tư duy cải tiến liên tục (Kaizen).",
+                    "Khả năng giám sát và nhạy bén với hiện trường.",
+                    "Kỹ năng phản hồi (Feedback) mang tính xây dựng."
+                ],
+                result: [
+                    "Cắt giảm thành công các hao phí (thời gian, vật tư).",
+                    "Luồng công việc của nhóm trơn tru và gắn kết hơn.",
+                    "Nâng cao hiệu suất tổng thể của quy trình làm việc."
+                ]
             },
             5: {
-                title: "Level 5: Tổng hợp",
-                subtitle: "Hệ thống hóa Dữ liệu",
-                group: "II. Quản lý",
+                title: "Level 5: Tổng hợp", subtitle: "Hệ thống hóa Dữ liệu", group: "II. Quản lý",
                 classes: { bg: 'bg-orange-100', textDark: 'text-orange-800', textLight: 'text-orange-600', border: 'border-orange-200', bar: 'bg-orange-500' },
-                desc: "Gom nhặt dữ liệu, thông tin rời rạc từ thực tế để xây dựng báo cáo tổng quan.",
-                result: "Hoàn thiện báo cáo cuối tuần, tóm tắt chính xác Wins và tiến độ các stages.",
-                skills: "Sử dụng dashboard quản trị, xâu chuỗi thông tin, trình bày báo cáo."
+                desc: [
+                    "Thu thập dữ liệu, thông tin rời rạc từ thực tế hoạt động.",
+                    "Xâu chuỗi, hệ thống hóa thành các báo cáo tổng quan.",
+                    "Theo dõi tiến độ đa luồng và các chỉ số (KPI) quan trọng."
+                ],
+                skills: [
+                    "Kỹ năng phân tích số liệu và quản lý thông tin.",
+                    "Sử dụng thành thạo các công cụ Dashboard/Báo cáo.",
+                    "Kỹ năng trình bày và trực quan hóa dữ liệu."
+                ],
+                result: [
+                    "Hoàn thiện các báo cáo quản trị chính xác, kịp thời.",
+                    "Cung cấp bức tranh toàn cảnh về hiệu suất của team.",
+                    "Đảm bảo các mục tiêu ngắn hạn đi đúng tiến độ."
+                ]
             },
             6: {
-                title: "Level 6: Phân tích",
-                subtitle: "Chẩn đoán & Ra quyết định",
-                group: "II. Quản lý",
-                classes: { bg: 'bg-orange-100', textDark: 'text-orange-800', textLight: 'text-orange-600', border: 'border-orange-200', bar: 'bg-orange-500' },
-                desc: "Nhìn sâu vào báo cáo để bắt đúng 'bệnh' hệ thống và đưa giải pháp tận gốc.",
-                result: "Nhận diện Red Flags thất thoát vật liệu (Yield), đề xuất quy trình kiểm chéo mới.",
-                skills: "Tư duy phản biện, phân tích dữ liệu, Data-driven decision making."
+                title: "Level 6: Phân tích", subtitle: "Chẩn đoán & Ra quyết định", group: "II. Quản lý",
+                classes: { bg: 'bg-amber-100', textDark: 'text-amber-800', textLight: 'text-amber-600', border: 'border-amber-200', bar: 'bg-amber-500' },
+                desc: [
+                    "Nhìn sâu vào báo cáo để bắt đúng 'bệnh' của hệ thống.",
+                    "Đưa ra các quyết định xử lý tận gốc vấn đề, tránh tái diễn.",
+                    "Phân bổ nguồn lực hợp lý dựa trên dữ liệu phân tích."
+                ],
+                skills: [
+                    "Tư duy phản biện (Critical Thinking) sâu sắc.",
+                    "Ra quyết định dựa trên dữ liệu (Data-driven decision).",
+                    "Kỹ năng giải quyết vấn đề phức tạp (Problem Solving)."
+                ],
+                result: [
+                    "Nhận diện sớm các rủi ro tiềm ẩn (Red Flags).",
+                    "Đưa ra các quyết sách chiến thuật mang tính bước ngoặt.",
+                    "Ngăn ngừa thất thoát, tối ưu hóa lợi nhuận / hiệu năng."
+                ]
             },
             7: {
-                title: "Level 7: Đào tạo",
-                subtitle: "Chuyển giao & Nhân bản",
-                group: "III. Lãnh đạo",
-                classes: { bg: 'bg-green-100', textDark: 'text-green-800', textLight: 'text-green-600', border: 'border-green-200', bar: 'bg-green-500' },
-                desc: "Đóng gói toàn bộ kiến thức, kinh nghiệm thành hệ thống tài liệu chuẩn để huấn luyện và xây dựng đội ngũ kế thừa.",
+                title: "Level 7: Đào tạo", subtitle: "Chuyển giao & Nhân bản", group: "III. Lãnh đạo",
+                classes: { bg: 'bg-teal-100', textDark: 'text-teal-800', textLight: 'text-teal-600', border: 'border-teal-200', bar: 'bg-teal-500' },
+                desc: [
+                    "Đóng gói toàn bộ kiến thức, kinh nghiệm thành tài liệu.",
+                    "Huấn luyện, dẫn dắt để xây dựng đội ngũ kế thừa tinh nhuệ.",
+                    "Chuyển giao năng lực để tự do hóa bản thân khỏi việc vận hành."
+                ],
+                skills: [
+                    "Kỹ năng sư phạm, biên soạn tài liệu chuẩn mực.",
+                    "Cố vấn (Mentoring) & Khai vấn (Coaching).",
+                    "Khả năng truyền đạt và đánh giá năng lực nhân sự."
+                ],
+                result: [
+                    "Tạo ra các thế hệ nhân sự có năng lực tương đương.",
+                    "Đảm bảo hệ thống vận hành không phụ thuộc cá nhân.",
+                    "Nhân bản quy trình thành công sang các đội ngũ mới."
+                ]
+            },
+            8: {
+                title: "Level 8: Sáng tạo", subtitle: "Kiến trúc Hệ thống mới", group: "III. Lãnh đạo",
+                classes: { bg: 'bg-emerald-100', textDark: 'text-emerald-800', textLight: 'text-emerald-600', border: 'border-emerald-200', bar: 'bg-emerald-500' },
+                desc: [
+                    "Phá bỏ giới hạn quy trình cũ, thiết kế lại cấu trúc cốt lõi.",
+                    "Áp dụng các công cụ, phương thức tiên phong để tạo đột phá.",
+                    "Chấp nhận rủi ro có tính toán để mở ra không gian phát triển mới."
+                ],
+                skills: [
+                    "Tư duy đột phá (Out-of-the-box) và tư duy thiết kế.",
+                    "Quản trị sự thay đổi (Change management) xuất sắc.",
+                    "Khả năng nắm bắt xu hướng công nghệ và thị trường."
+                ],
+                result: [
+                    "Đưa ra sáng kiến tạo bước nhảy vọt về năng suất.",
+                    "Ra mắt mô hình hoạt động / sản phẩm mang tính cách mạng.",
+                    "Tái định hình lợi thế cạnh tranh của toàn bộ tổ chức."
+                ]
+            },
+            9: {
+                title: "Level 9: Truyền cảm hứng", subtitle: "Kiến tạo Văn hóa", group: "III. Lãnh đạo",
+                classes: { bg: 'bg-emerald-100', textDark: 'text-emerald-800', textLight: 'text-emerald-600', border: 'border-emerald-200', bar: 'bg-emerald-500' },
+                desc: [
+                    "Dẫn dắt tổ chức bằng tầm nhìn, thay vì mệnh lệnh hành chính.",
+                    "Định hình tư duy và hệ giá trị cốt lõi chung cho mọi người.",
+                    "Khơi dậy đam mê và khát vọng cống hiến từ bên trong nhân sự."
+                ],
+                skills: [
+                    "Lãnh đạo bằng tầm nhìn (Visionary Leadership).",
+                    "Trí tuệ cảm xúc (EQ) và khả năng thấu cảm mức độ cao.",
+                    "Kỹ năng kể chuyện (Storytelling) và truyền đạt ảnh hưởng."
+                ],
+                result: [
+                    "Xây dựng thành công văn hóa tự chủ, sáng tạo, gắn kết.",
+                    "Nhân sự tự giác làm việc với mức năng lượng cao nhất.",
+                    "Tổ chức trở thành một hệ sinh thái phát triển bền vững."
+                ]
+            }
+        };nh hệ thống tài liệu chuẩn để huấn luyện và xây dựng đội ngũ kế thừa.",
                 result: "Tạo ra được các thế hệ nhân sự có năng lực tương đương hoặc xuất sắc hơn để duy trì hệ thống.",
                 skills: "Kỹ năng sư phạm, biên soạn tài liệu, cố vấn (Mentoring) & Khai vấn (Coaching)."
             },
@@ -781,6 +874,19 @@
             const data = levelsData[level];
             const c = data.classes;
 
+            // Generate bullet point HTML
+            const descHtml = `<ul class="space-y-2 mt-3 text-gray-700 leading-relaxed font-medium text-sm">` + 
+                data.desc.map(item => `<li class="flex items-start gap-2"><i class="fas fa-circle text-[6px] mt-2 text-gray-400"></i><span>${item}</span></li>`).join('') + 
+                `</ul>`;
+                
+            const skillsHtml = `<ul class="space-y-2 mt-3 text-gray-700 leading-relaxed font-medium text-sm">` + 
+                data.skills.map(item => `<li class="flex items-start gap-2"><i class="fas fa-check text-[10px] mt-1 ${c.textLight}"></i><span>${item}</span></li>`).join('') + 
+                `</ul>`;
+                
+            const resultHtml = `<ul class="space-y-2 mt-3 text-gray-800 leading-relaxed font-semibold text-sm">` + 
+                data.result.map(item => `<li class="flex items-start gap-2"><i class="fas fa-bullseye text-[12px] mt-1 ${c.textLight}"></i><span>${item}</span></li>`).join('') + 
+                `</ul>`;
+
             const html = `
                 <div class="animate-fade-in">
                     <!-- Header -->
@@ -800,25 +906,36 @@
                     </div>
 
                     <!-- 3-column content grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-100">
-                            <div class="uppercase text-[10px] font-bold text-gray-400 tracking-widest mb-2">Mô tả</div>
-                            <p class="text-gray-700 leading-relaxed font-medium text-sm">${data.desc}</p>
-                        </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                         
-                        <div class="bg-white p-5 rounded-2xl border ${c.border} shadow-sm relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-1 h-full ${c.bar}"></div>
-                            <div class="uppercase text-[10px] font-bold ${c.textLight} tracking-widest mb-2">Kết quả kỳ vọng</div>
-                            <p class="text-gray-800 font-semibold leading-relaxed text-sm">${data.result}</p>
-                        </div>
-                        
-                        <div class="bg-white p-5 rounded-2xl border border-gray-100">
-                            <div class="uppercase text-[10px] font-bold text-gray-400 tracking-widest mb-2">Kỹ năng yêu cầu</div>
-                            <div class="flex items-start gap-2 text-gray-600">
-                                <i class="fas fa-check-circle mt-1 ${c.textLight} text-sm"></i>
-                                <p class="font-medium text-sm">${data.skills}</p>
+                        <!-- Column 1: Mô tả -->
+                        <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-info-circle text-gray-400"></i>
+                                <h5 class="uppercase text-[11px] font-bold text-gray-500 tracking-widest">Mô tả chi tiết</h5>
                             </div>
+                            ${descHtml}
                         </div>
+                        
+                        <!-- Column 2: Kỹ năng yêu cầu -->
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-bolt ${c.textLight}"></i>
+                                <h5 class="uppercase text-[11px] font-bold ${c.textDark} tracking-widest">Kỹ năng yêu cầu</h5>
+                            </div>
+                            ${skillsHtml}
+                        </div>
+
+                        <!-- Column 3: Kết quả kỳ vọng -->
+                        <div class="bg-white p-5 rounded-2xl border ${c.border} shadow-sm relative overflow-hidden hover:shadow-md transition-shadow">
+                            <div class="absolute top-0 left-0 w-1 h-full ${c.bar}"></div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-star ${c.textLight}"></i>
+                                <h5 class="uppercase text-[11px] font-bold ${c.textDark} tracking-widest">Kết quả kỳ vọng</h5>
+                            </div>
+                            ${resultHtml}
+                        </div>
+                        
                     </div>
                 </div>
             `;
