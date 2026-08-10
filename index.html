@@ -174,6 +174,14 @@
             <p class="subtitle mt-4">Tài liệu chuẩn hóa về báo cáo, nguyên tắc vận hành và hệ thống phát triển năng lực toàn diện.</p>
         </section>
 
+        <!-- Tab Navigation -->
+        <div class="flex justify-center gap-4 mt-8 mb-4">
+            <button onclick="switchTab('training')" id="tab-training" class="px-8 py-3 rounded-xl font-bold text-lg bg-blue-600 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95">Training</button>
+            <button onclick="switchTab('process')" id="tab-process" class="px-8 py-3 rounded-xl font-bold text-lg bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 transition-all transform hover:scale-105 active:scale-95">Process</button>
+        </div>
+
+        <div id="content-training" class="animate-fade-in block">
+
         <!-- SECTION I: HỆ THỐNG PHÁT TRIỂN NĂNG LỰC -->
         <section id="competency">
             <div class="section-header">
@@ -524,6 +532,195 @@
             </div>
         </section>
 
+        </div> <!-- End of content-training -->
+
+        <div id="content-process" class="hidden animate-fade-in">
+            <!-- Process Content -->
+            <section class="mb-12 mt-8">
+                <div class="section-header">
+                    <p class="section-meta">Phần IV</p>
+                    <h2 class="section-title">Warehouse Process</h2>
+                </div>
+
+                <!-- IN: Nhập -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                        <i class="fas fa-arrow-down text-emerald-500 bg-emerald-100 p-2 rounded-lg"></i> a. IN: Nhập
+                    </h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Raw Material -->
+                        <div class="glass-panel">
+                            <h4 class="text-xl font-bold text-blue-800 mb-4 border-b border-blue-100 pb-2">Hàng Raw Material (RM)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-blue-50/50 border-b border-blue-100 text-sm">
+                                            <th class="p-3 text-blue-800 uppercase tracking-wider">Trạng thái</th>
+                                            <th class="p-3 text-blue-800 uppercase tracking-wider">Bộ phận</th>
+                                            <th class="p-3 text-blue-800 uppercase tracking-wider">Phụ trách</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr class="hover:bg-blue-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-gray-100 text-gray-700 rounded font-semibold text-xs border border-gray-200">1. Request</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">Purchaser</td>
+                                            <td class="p-3 text-gray-900">Ms. Ruby</td>
+                                        </tr>
+                                        <tr class="hover:bg-blue-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded font-semibold text-xs border border-blue-200">2. Check</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">QC</td>
+                                            <td class="p-3 text-gray-900">Ms. Tuyết</td>
+                                        </tr>
+                                        <tr class="hover:bg-blue-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-purple-100 text-purple-700 rounded font-semibold text-xs border border-purple-200">3. Confirm</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">Production</td>
+                                            <td class="p-3 text-gray-900">Mr. Nhựt</td>
+                                        </tr>
+                                        <tr class="hover:bg-blue-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded font-semibold text-xs border border-emerald-200">4. Completed</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">Warehouse</td>
+                                            <td class="p-3 text-gray-900">Ms. Diễm</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-5 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl flex gap-3 items-start">
+                                <i class="fas fa-exclamation-circle text-red-500 mt-1"></i>
+                                <p class="text-red-800 text-sm leading-relaxed"><strong>Reject:</strong> Ở bước 3, nếu Mr. Nhựt không Confirm thì sẽ bị reject và đưa lên Giám đốc (GD) xử lý case by case.</p>
+                            </div>
+                        </div>
+
+                        <!-- MRO -->
+                        <div class="glass-panel">
+                            <h4 class="text-xl font-bold text-orange-800 mb-4 border-b border-orange-100 pb-2">Hàng Phụ Liệu (MRO)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-orange-50/50 border-b border-orange-100 text-sm">
+                                            <th class="p-3 text-orange-800 uppercase tracking-wider">Trạng thái</th>
+                                            <th class="p-3 text-orange-800 uppercase tracking-wider">Bộ phận</th>
+                                            <th class="p-3 text-orange-800 uppercase tracking-wider">Phụ trách</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr class="hover:bg-orange-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-gray-100 text-gray-700 rounded font-semibold text-xs border border-gray-200">1. Request</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">Purchaser</td>
+                                            <td class="p-3 text-gray-900">Ms. Ruby</td>
+                                        </tr>
+                                        <tr class="hover:bg-orange-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded font-semibold text-xs border border-blue-200">2. Check</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">Warehouse</td>
+                                            <td class="p-3 text-gray-900">Ms. Diễm</td>
+                                        </tr>
+                                        <tr class="hover:bg-orange-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-purple-100 text-purple-700 rounded font-semibold text-xs border border-purple-200">3. Confirm</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">Logistic</td>
+                                            <td class="p-3 text-gray-900">Mr. Cong</td>
+                                        </tr>
+                                        <tr class="hover:bg-orange-50/30 transition-colors">
+                                            <td class="p-3"><span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded font-semibold text-xs border border-emerald-200">4. Completed</span></td>
+                                            <td class="p-3 text-gray-700 font-medium">Warehouse</td>
+                                            <td class="p-3 text-gray-900">Ms. Diễm</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yêu cầu bắt buộc -->
+                    <div class="mt-6 glass-panel relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-yellow-400"></div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-clipboard-list text-yellow-500"></i> Yêu cầu bắt buộc (Quy trình Nhập)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/50 p-5 rounded-xl border border-gray-100">
+                            <div>
+                                <h5 class="font-bold text-blue-800 mb-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm mr-2">Bước 2</span> Check</h5>
+                                <ul class="space-y-3 text-sm text-gray-700">
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 1:</strong> Phiếu kiểm tra chất lượng</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 2:</strong> Hình sản phẩm</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-square text-green-500 mt-1"></i> <div><strong>Check Quantity:</strong> Số lượng trên giấy tờ để làm AQL <span class="text-gray-500 italic">(không đếm)</span></div></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-emerald-800 mb-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-sm mr-2">Bước 4</span> Completed</h5>
+                                <ul class="space-y-3 text-sm text-gray-700">
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 3:</strong> Hình tổng thể hiện quy cách đóng gói</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 4:</strong> Hình sản phẩm chi tiết</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-square text-green-500 mt-1"></i> <div><strong>Check Quantity:</strong> Số lượng thực tế <span class="text-gray-500 italic">(đếm)</span></div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OUT: Xuất -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                        <i class="fas fa-arrow-up text-orange-500 bg-orange-100 p-2 rounded-lg"></i> b. OUT: Xuất
+                    </h3>
+                    <div class="glass-panel mb-6">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-50 border-b border-gray-200 text-sm">
+                                        <th class="p-3 text-gray-800 uppercase tracking-wider">Trạng thái</th>
+                                        <th class="p-3 text-gray-800 uppercase tracking-wider">Bộ phận</th>
+                                        <th class="p-3 text-gray-800 uppercase tracking-wider">Phụ trách</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50/50 transition-colors">
+                                        <td class="p-3"><span class="px-2 py-1 bg-gray-100 text-gray-700 rounded font-semibold text-xs border border-gray-200">1. Request</span></td>
+                                        <td class="p-3 text-gray-700 font-medium">Production</td>
+                                        <td class="p-3 text-gray-900">Leader</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50/50 transition-colors">
+                                        <td class="p-3"><span class="px-2 py-1 bg-purple-100 text-purple-700 rounded font-semibold text-xs border border-purple-200">2. Approved</span></td>
+                                        <td class="p-3 text-gray-700 font-medium">Production</td>
+                                        <td class="p-3 text-gray-900">Mr. Nhựt</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50/50 transition-colors">
+                                        <td class="p-3"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded font-semibold text-xs border border-blue-200">3. Delivered</span></td>
+                                        <td class="p-3 text-gray-700 font-medium">Warehouse</td>
+                                        <td class="p-3 text-gray-900">Mr. Sơn</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50/50 transition-colors">
+                                        <td class="p-3"><span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded font-semibold text-xs border border-emerald-200">4. Completed</span></td>
+                                        <td class="p-3 text-gray-700 font-medium">Production</td>
+                                        <td class="p-3 text-gray-900">Leader</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Yêu cầu bắt buộc (Xuất) -->
+                    <div class="glass-panel relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-yellow-400"></div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-clipboard-list text-yellow-500"></i> Yêu cầu bắt buộc (Quy trình Xuất)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/50 p-5 rounded-xl border border-gray-100">
+                            <div>
+                                <h5 class="font-bold text-blue-800 mb-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm mr-2">Bước 3</span> Delivered</h5>
+                                <ul class="space-y-3 text-sm text-gray-700">
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 1:</strong> Hình tổng quan hàng giao</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 2:</strong> Hình sản phẩm chi tiết</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-square text-green-500 mt-1"></i> <div><strong>Check Quantity:</strong> Số lượng thực tế giao</div></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-emerald-800 mb-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-sm mr-2">Bước 4</span> Completed</h5>
+                                <ul class="space-y-3 text-sm text-gray-700">
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 3:</strong> Hình tổng quan hàng nhận</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-camera text-blue-400 mt-1"></i> <div><strong>Photo 4:</strong> Hình sản phẩm chi tiết</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-square text-green-500 mt-1"></i> <div><strong>Check Quantity:</strong> Số lượng thực tế nhận</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
 
     </main>
@@ -534,6 +731,30 @@
 
     <!-- Interactive Pyramid Logic -->
     <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            const btnTraining = document.getElementById('tab-training');
+            const btnProcess = document.getElementById('tab-process');
+            const contentTraining = document.getElementById('content-training');
+            const contentProcess = document.getElementById('content-process');
+            
+            if (tabId === 'training') {
+                btnTraining.className = "px-8 py-3 rounded-xl font-bold text-lg bg-blue-600 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95";
+                btnProcess.className = "px-8 py-3 rounded-xl font-bold text-lg bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 transition-all transform hover:scale-105 active:scale-95";
+                contentTraining.classList.remove('hidden');
+                contentTraining.classList.add('block');
+                contentProcess.classList.add('hidden');
+                contentProcess.classList.remove('block');
+            } else {
+                btnProcess.className = "px-8 py-3 rounded-xl font-bold text-lg bg-blue-600 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95";
+                btnTraining.className = "px-8 py-3 rounded-xl font-bold text-lg bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 transition-all transform hover:scale-105 active:scale-95";
+                contentProcess.classList.remove('hidden');
+                contentProcess.classList.add('block');
+                contentTraining.classList.add('hidden');
+                contentTraining.classList.remove('block');
+            }
+        }
+
         // Draw 3D Pyramid SVG
         function draw3DPyramid() {
             const R = 120;
